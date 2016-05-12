@@ -1,6 +1,10 @@
 # Last Bus Tan
 Check the last bus of the day in Nantes
 
-## Installation
-`npm install`
-`bower install`
+## Development dependencies
+less : npm install -g less
+
+## Install and run
+npm install
+bower install
+node server.js

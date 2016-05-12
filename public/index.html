@@ -10,12 +10,7 @@
     <!-- SCROLLS -->
     <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css"><!-- load bootstrap -->
     <link rel="stylesheet" href="bower_components/bootstrap-material-design/dist/css/bootstrap-material-design.min.css"><!-- load bootstrap theme -->
-    <style>
-        html                    { overflow-y:scroll; }
-        body                    { padding-top:50px; }
-        #todo-list              { margin-bottom:30px; }
-        .list-group-item        { background-color: white !important; padding: 15px !important; }
-    </style>
+    <link rel="stylesheet" href="css/main.css"><!-- load main css -->
 
     <!-- SPELLS -->
     <script src="bower_components/jquery/dist/jquery.min.js"></script> <!-- load jquery -->
@@ -32,11 +27,15 @@
             <h1>Nombre d'arrêts en base : <span class="label label-info">{{ nbArrets }}</span></h1>
         </div>
 
-        <!-- TODO LIST -->
-        <div id="todo-list" class="row">
-            <div class="col-md-12">
+        <!-- LOADER -->
+        <div class="cssload-container" ng-show="loading">
+            <div class="cssload-zenith"></div>
+        </div>
 
-                <div ng-repeat="data in arretData">
+        <!-- TODO LIST -->
+        <div class="row main-list">
+            <div class="col-md-12">
+                <div ng-repeat="data in arretData | orderBy:data.temps">
                     <p>
                         <img style="width:30px" src='img/{{ data.ligne.numLigne }}.gif' />
                         <b>Terminus</b> : {{ data.terminus }}
@@ -60,7 +59,6 @@
                       </p>
                     </div>
                   </div>
-                  <div class="list-group-separator"></div>
                 </div>
                 <!-- LOOP OVER THE ARRETS IN $scope.arrets -->
                 <!-- <div class="well" ng-repeat="arret in arrets">
@@ -71,6 +69,20 @@
                         </span>
                     </p>
                 </div> -->
+            </div>
+        </div>
+
+        <div class="row main-list">
+            <div class="col-md-12">
+                <div class="list-group" ng-repeat="ligne in lignes">
+                  <div class="list-group-item">
+                     <img style="width:30px" src='img/{{ ligne.numLigne }}.gif' />
+                    <div class="row-content">
+                      <div class="least-content">{{ ligne.numLigne }}</div>
+                      <h4 class="list-group-item-heading">{{ ligne.numLigne }}</h4>
+                    </div>
+                  </div>
+                </div>
             </div>
         </div>
     </div>
