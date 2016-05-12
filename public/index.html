@@ -4,27 +4,67 @@
     <!-- META -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Optimize mobile viewport -->
+    <meta name="description" content="Check the last bus in Nantes">
+    <meta name="author" content="Valentin PORCHET">
 
     <title>Last Bus Tan</title>
 
-    <!-- SCROLLS -->
+    <!-- CSS -->
     <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css"><!-- load bootstrap -->
     <link rel="stylesheet" href="bower_components/bootstrap-material-design/dist/css/bootstrap-material-design.min.css"><!-- load bootstrap theme -->
     <link rel="stylesheet" href="css/main.css"><!-- load main css -->
 
-    <!-- SPELLS -->
-    <script src="bower_components/jquery/dist/jquery.min.js"></script> <!-- load jquery -->
-    <script src="bower_components/underscore/underscore-min.js"></script> <!-- load underscore -->
-    <script src="bower_components/angular/angular.min.js"></script> <!-- load angular -->
-    <script src="core.js"></script><!-- core of angular app -->
-
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
 </head>
 <body ng-controller="MainController">
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+        <div class="container">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="#">Last Bus Tan</a>
+            </div>
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                    <li>
+                        <a href="#">Arrêts</a>
+                    </li>
+                    <li>
+                        <a href="#">Lignes</a>
+                    </li>
+                    <li>
+                        <a href="#">Localisation</a>
+                    </li>
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container -->
+    </nav>
+
+    <!-- Page Content -->
     <div class="container">
 
-        <!-- HEADER AND TODO COUNT -->
-        <div class="jumbotron text-center">
-            <h1>Nombre d'arrêts en base : <span class="label label-info">{{ nbArrets }}</span></h1>
+        <!-- Page Heading -->
+        <div class="row">
+            <div class="col-lg-12">
+                <h1 class="page-header">Last Bus Tan
+                    <small>Liste des arrêts</small>
+                </h1>
+            </div>
         </div>
 
         <!-- LOADER -->
@@ -32,59 +72,69 @@
             <div class="cssload-zenith"></div>
         </div>
 
-        <!-- TODO LIST -->
-        <div class="row main-list">
-            <div class="col-md-12">
-                <div ng-repeat="data in arretData | orderBy:data.temps">
-                    <p>
-                        <img style="width:30px" src='img/{{ data.ligne.numLigne }}.gif' />
-                        <b>Terminus</b> : {{ data.terminus }}
-                        <b>Temps</b> : {{ data.temps }}
-                    </p>
-                    <br />
-                </div>
-
-                <div class="list-group" ng-repeat="arret in arrets">
-                  <div class="list-group-item" ng-click="showArret(arret.codeLieu)">
-                    <div class="row-action-primary">
-                      <i class="material-icons">folder</i>
+        <!-- /.row -->
+        <div ng-repeat="data in arretData | orderBy:data.temps">
+            <hr>
+            <!-- Project One -->
+            <div class="row panel panel-primary">
+                <div class="panel-heading"><h1>{{ data.ligne.numLigne }}</h1></div>
+                <div class="panel-body">
+                    <div class="col-md-7">
+                        <a href="#">
+                            <img class="img-responsive" src="img/{{ data.ligne.numLigne }}.gif" alt="">
+                        </a>
                     </div>
-                    <div class="row-content">
-                      <div class="least-content">{{ arret.distance }}</div>
-                      <h4 class="list-group-item-heading">{{ arret.libelle }}</h4>
-                      <p class="list-group-item-text">
-                        <span ng-repeat="ligne in arret.ligne">
-                            <img style="width:30px" src='img/{{ ligne.numLigne }}.gif' />
-                        </span>
-                      </p>
+                    <div class="col-md-5">
+                        <h3>Terminus : {{ data.terminus }}</h3>
+                        <h4>Temps : {{ data.temps }}</h4>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Laudantium veniam exercitationem expedita laborum at voluptate. Labore, voluptates totam at aut nemo deserunt rem magni pariatur quos perspiciatis atque eveniet unde.</p>
+                        <a class="btn btn-primary" href="#">View Project <span class="glyphicon glyphicon-chevron-right"></span></a>
                     </div>
-                  </div>
-                </div>
-                <!-- LOOP OVER THE ARRETS IN $scope.arrets -->
-                <!-- <div class="well" ng-repeat="arret in arrets">
-                    <h1> <b>{{ arret.libelle }}</b> :</h1>
-                    <p>
-                        <span ng-repeat="ligne in arret.ligne">
-                        <img style="width:50px" src='img/{{ ligne.numLigne }}.gif' />
-                        </span>
-                    </p>
-                </div> -->
-            </div>
-        </div>
-
-        <div class="row main-list">
-            <div class="col-md-12">
-                <div class="list-group" ng-repeat="ligne in lignes">
-                  <div class="list-group-item">
-                     <img style="width:30px" src='img/{{ ligne.numLigne }}.gif' />
-                    <div class="row-content">
-                      <div class="least-content">{{ ligne.numLigne }}</div>
-                      <h4 class="list-group-item-heading">{{ ligne.numLigne }}</h4>
-                    </div>
-                  </div>
                 </div>
             </div>
+            <!-- /.row -->
         </div>
+
+        <div class="arrets" ng-repeat="arret in arrets">
+            <!-- Project One -->
+            <div class="row panel panel-primary" ng-click="showArret(arret.codeLieu)">
+                <div class="panel-heading">
+                    <div class="row">
+                        <div class="col-md-6"><h1>{{ arret.libelle }}</h1></div>
+                        <div class="col-md-6"><h1 class="text-right">{{ arret.distance }}</h1></div>
+                    </div>
+                </div>
+                <div class="panel-body">
+                    <div class="col-md-12">
+                        <p class="list-group-item-text">
+                            <span ng-repeat="ligne in arret.ligne">
+                                <img class="img-responsive" src="img/{{ ligne.numLigne }}.gif" alt="Ligne {{ ligne.numLigne }}" />
+                            </span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <!-- /.row -->
+        </div>
+
+        <!-- Footer -->
+        <footer>
+            <div class="row">
+                <div class="col-lg-12 text-center">
+                    <p>Copyright &copy; Valentin PORCHET 2016</p>
+                </div>
+            </div>
+            <!-- /.row -->
+        </footer>
+
     </div>
+    <!-- /.container -->
+
+    <!-- JS -->
+    <script src="bower_components/jquery/dist/jquery.min.js"></script> <!-- load jquery -->
+    <script src="bower_components/underscore/underscore-min.js"></script> <!-- load underscore -->
+    <script src="bower_components/angular/angular.min.js"></script> <!-- load angular -->
+    <script src="core.js"></script><!-- core of angular app -->
 </body>
+
 </html>

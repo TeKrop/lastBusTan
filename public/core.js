@@ -3,18 +3,18 @@ function MainController($scope, $http) {
     $scope.loading = true;
 
     // when landing on the page, get all todos and show them
-    /*$http.get('/api/arrets')
+    $http.get('/api/arrets')
         .success(function(data) {
-            $scope.nbArrets = _.size(_.countBy(data, function(data) { return data.libelle; }));
+            //$scope.nbArrets = _.size(_.countBy(data, function(data) { return data.libelle; }));
             $scope.arrets = data;
             $scope.loading = false;
         })
         .error(function(data) {
             console.log('Error: ' + data);
         });
-*/
+
     //
-    $http.get('/api/lignes')
+    /*$http.get('/api/lignes')
         .success(function(data) {
             console.log(data);
             $scope.nbLignes = data.length;
@@ -23,7 +23,7 @@ function MainController($scope, $http) {
         })
         .error(function(data) {
             console.log('Error: ' + data);
-        });
+        });*/
 
     $scope.showArret = function(id) {
         $scope.loading = true;
@@ -36,9 +36,6 @@ function MainController($scope, $http) {
                 console.log('Error: ' + data);
             });
     };
-
-
-
 
     // when submitting the add form, send the text to the node API
     /*$scope.createTodo = function() {

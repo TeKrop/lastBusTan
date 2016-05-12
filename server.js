@@ -104,7 +104,6 @@ app.get('/api/lignes', function(req, res) {
                     }
                 }
             }
-//            console.log(arrayLines);
             res.json(arrayLines);
         });
     });
