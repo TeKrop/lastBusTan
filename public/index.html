@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html ng-app="lastBusTan">
+<head>
+    <!-- META -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Optimize mobile viewport -->
+
+    <title>Last Bus Tan</title>
+
+    <!-- SCROLLS -->
+    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css"><!-- load bootstrap -->
+    <link rel="stylesheet" href="bower_components/bootstrap-material-design/dist/css/bootstrap-material-design.min.css"><!-- load bootstrap theme -->
+    <style>
+        html                    { overflow-y:scroll; }
+        body                    { padding-top:50px; }
+        #todo-list              { margin-bottom:30px; }
+        .list-group-item        { background-color: white !important; padding: 15px !important; }
+    </style>
+
+    <!-- SPELLS -->
+    <script src="bower_components/jquery/dist/jquery.min.js"></script> <!-- load jquery -->
+    <script src="bower_components/underscore/underscore-min.js"></script> <!-- load underscore -->
+    <script src="bower_components/angular/angular.min.js"></script> <!-- load angular -->
+    <script src="core.js"></script><!-- core of angular app -->
+
+</head>
+<body ng-controller="MainController">
+    <div class="container">
+
+        <!-- HEADER AND TODO COUNT -->
+        <div class="jumbotron text-center">
+            <h1>Nombre d'arrêts en base : <span class="label label-info">{{ nbArrets }}</span></h1>
+        </div>
+
+        <!-- TODO LIST -->
+        <div id="todo-list" class="row">
+            <div class="col-md-12">
+
+                <div ng-repeat="data in arretData">
+                    <p>
+                        <img style="width:30px" src='img/{{ data.ligne.numLigne }}.gif' />
+                        <b>Terminus</b> : {{ data.terminus }}
+                        <b>Temps</b> : {{ data.temps }}
+                    </p>
+                    <br />
+                </div>
+
+                <div class="list-group" ng-repeat="arret in arrets">
+                  <div class="list-group-item" ng-click="showArret(arret.codeLieu)">
+                    <div class="row-action-primary">
+                      <i class="material-icons">folder</i>
+                    </div>
+                    <div class="row-content">
+                      <div class="least-content">{{ arret.distance }}</div>
+                      <h4 class="list-group-item-heading">{{ arret.libelle }}</h4>
+                      <p class="list-group-item-text">
+                        <span ng-repeat="ligne in arret.ligne">
+                            <img style="width:30px" src='img/{{ ligne.numLigne }}.gif' />
+                        </span>
+                      </p>
+                    </div>
+                  </div>
+                  <div class="list-group-separator"></div>
+                </div>
+                <!-- LOOP OVER THE ARRETS IN $scope.arrets -->
+                <!-- <div class="well" ng-repeat="arret in arrets">
+                    <h1> <b>{{ arret.libelle }}</b> :</h1>
+                    <p>
+                        <span ng-repeat="ligne in arret.ligne">
+                        <img style="width:50px" src='img/{{ ligne.numLigne }}.gif' />
+                        </span>
+                    </p>
+                </div> -->
+            </div>
+        </div>
+    </div>
+</body>
+</html>
