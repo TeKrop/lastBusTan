@@ -1,6 +1,8 @@
 function MainController($scope, $http) {
-    //$scope.formData = {};
+    // global variables
     $scope.loading = true;
+    $scope.currentArret = '';
+    $scope.pageHeader = 'Liste des arrêts';
 
     // when landing on the page, get all todos and show them
     $http.get('/api/arrets')
@@ -25,17 +27,22 @@ function MainController($scope, $http) {
             console.log('Error: ' + data);
         });*/
 
-    $scope.showArret = function(id) {
+    $scope.showArret = function(arret) {
         $scope.loading = true;
-        $http.get('/api/arret/' + id)
+        $scope.currentArret = arret.libelle;
+        $location.path('/arret/' + arret.codeLieu);
+        $http.get('/api/arret/' + arret.codeLieu)
             .success(function(data) {
                 $scope.arretData = data;
+                $scope.pageHeader = 'Arrêt ' + arret.libelle
                 $scope.loading = false;
             })
             .error(function(data) {
                 console.log('Error: ' + data);
             });
     };
+
+    $scope.previous
 
     // when submitting the add form, send the text to the node API
     /*$scope.createTodo = function() {
@@ -64,4 +71,5 @@ function MainController($scope, $http) {
 }
 
 MainController.$inject = ['$scope', '$http'];
-angular.module('lastBusTan', []).controller('MainController', MainController);
+angular.module('lastBusTan', [])
+    .controller('MainController', MainController);

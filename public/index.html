@@ -62,7 +62,7 @@
         <div class="row">
             <div class="col-lg-12">
                 <h1 class="page-header">Last Bus Tan
-                    <small>Liste des arrêts</small>
+                    <small>{{ pageHeader }}</small>
                 </h1>
             </div>
         </div>
@@ -70,25 +70,25 @@
         <!-- LOADER -->
         <div class="cssload-container" ng-show="loading">
             <div class="cssload-zenith"></div>
+            <hr>
         </div>
 
         <!-- /.row -->
-        <div ng-repeat="data in arretData | orderBy:data.temps">
-            <hr>
+        <div class="arrets" ng-repeat="data in arretData | orderBy:data.temps">
             <!-- Project One -->
-            <div class="row panel panel-primary">
-                <div class="panel-heading"><h1>{{ data.ligne.numLigne }}</h1></div>
-                <div class="panel-body">
-                    <div class="col-md-7">
-                        <a href="#">
+            <div class="row panel panel-primary not-clickable">
+                <div class="panel-heading">
+                    <div class="row">
+                        <div class="col-md-2">
                             <img class="img-responsive" src="img/{{ data.ligne.numLigne }}.gif" alt="">
-                        </a>
-                    </div>
-                    <div class="col-md-5">
-                        <h3>Terminus : {{ data.terminus }}</h3>
-                        <h4>Temps : {{ data.temps }}</h4>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Laudantium veniam exercitationem expedita laborum at voluptate. Labore, voluptates totam at aut nemo deserunt rem magni pariatur quos perspiciatis atque eveniet unde.</p>
-                        <a class="btn btn-primary" href="#">View Project <span class="glyphicon glyphicon-chevron-right"></span></a>
+                        </div>
+                        <div class="col-md-7">
+                            <h1>{{ currentArret }}</h1>
+                            <h1>&rarr; {{ data.terminus }}</h1>
+                        </div>
+                        <div class="col-md-3 text-right">
+                            <h1 class="time">{{ data.temps }}</h1>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -96,8 +96,8 @@
         </div>
 
         <div class="arrets" ng-repeat="arret in arrets">
-            <!-- Project One -->
-            <div class="row panel panel-primary" ng-click="showArret(arret.codeLieu)">
+            <!-- Liste des arrêts -->
+            <div class="row panel panel-primary" ng-click="showArret(arret)">
                 <div class="panel-heading">
                     <div class="row">
                         <div class="col-md-6"><h1>{{ arret.libelle }}</h1></div>

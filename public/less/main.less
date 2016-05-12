@@ -14,12 +14,23 @@ footer {
 
 /*********** ARRETS ***********/
 .arrets {
-    h1 {
-        margin-top: 10px;
-    }
-    img {
-        display: inline-block;
-        margin-right: 10px;
+    .panel {
+        cursor: pointer;
+        &.not-clickable {
+            cursor: default;
+        }
+        h1 {
+            margin-top: 10px;
+            font-weight: bold;
+
+            &.time {
+                font-size: 60px;
+            }
+        }
+        img {
+            display: inline-block;
+            margin-right: 10px;
+        }
     }
 }
 
