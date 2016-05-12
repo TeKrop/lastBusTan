@@ -30,7 +30,6 @@ function MainController($scope, $http) {
     $scope.showArret = function(arret) {
         $scope.loading = true;
         $scope.currentArret = arret.libelle;
-        $location.path('/arret/' + arret.codeLieu);
         $http.get('/api/arret/' + arret.codeLieu)
             .success(function(data) {
                 $scope.arretData = data;
