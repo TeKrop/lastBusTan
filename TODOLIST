@@ -1,6 +1,9 @@
 TODOLIST
 
+==> Lazy load images avec Angular
 ==> Images manquantes des arrêts
 ==> Partie sur les lignes correspondant à un arrêt cliqué
 ==> Partie sur la liste des lignes puis arrêts
 ==> Partie sur les arrêts par rapport à la position (map ?)
+
+==> Voir si Underscore.js vraiment nécessaire dans bower

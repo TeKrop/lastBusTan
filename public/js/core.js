@@ -1,4 +1,6 @@
-function MainController($scope, $http) {
+var app = angular.module('lastBusTan', []);
+
+app.controller('MainController', function($rootScope, $scope, $http, $window, $document, $timeout) {
     // global variables
     $scope.loading = true;
     $scope.currentArret = '';
@@ -41,8 +43,6 @@ function MainController($scope, $http) {
             });
     };
 
-    $scope.previous
-
     // when submitting the add form, send the text to the node API
     /*$scope.createTodo = function() {
         $http.get('/api/lignes/' + $scope.formData)
@@ -67,8 +67,4 @@ function MainController($scope, $http) {
                 console.log('Error: ' + data);
             });
     };*/
-}
-
-MainController.$inject = ['$scope', '$http'];
-angular.module('lastBusTan', [])
-    .controller('MainController', MainController);
+});
