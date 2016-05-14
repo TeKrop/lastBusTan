@@ -1,5 +1,6 @@
 TODOLIST
 
+==> Donner la dernière heure et non pas la prochaine !
 ==> Lazy load lignes et arrêts avec Angular
 ==> Images manquantes des arrêts
 ==> Partie sur les lignes correspondant à un arrêt cliqué

@@ -25,7 +25,6 @@ lastBusTanControllers.controller('ArretsCtrl', function($scope, $http) {
         $scope.currentArret = arret.libelle;
         $http.get('/api/arret/' + arret.codeLieu)
             .success(function(data) {
-                // CHOPER les codes arrets et faire des get sur horairesarrets.json
                 $scope.arretData = data;
                 $scope.pageHeader = 'Arrêt ' + arret.libelle
                 $scope.loading = false;

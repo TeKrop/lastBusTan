@@ -22,20 +22,20 @@
     <div class="alert alert-danger" role="alert" ng-show="errorMessage">{{ errorMessage }}</div>
 
     <!-- TIMES LIST FOR SELECTED ARRET -->
-    <div class="arrets" ng-repeat="data in arretData | orderBy:data.temps" ng-show="currentArret">
+    <div class="arrets" ng-repeat="data in arretData | orderBy:data.heure" ng-show="currentArret">
         <!-- Project One -->
         <div class="row panel panel-primary not-clickable">
             <div class="panel-heading">
                 <div class="row">
                     <div class="col-md-2">
-                        <img class="img-responsive" src="img/{{ data.ligne.numLigne }}.gif" alt="Ligne {{ ligne.numLigne }}">
+                        <img class="img-responsive" src="img/{{ data.ligne }}.gif" alt="Ligne {{ data.ligne }}">
                     </div>
                     <div class="col-md-7">
                         <h1>{{ currentArret }}</h1>
                         <h1>&rarr; {{ data.terminus }}</h1>
                     </div>
                     <div class="col-md-3 text-right">
-                        <h1 class="time">{{ data.temps }}</h1>
+                        <h1 class="time">{{ data.heure }}</h1>
                     </div>
                 </div>
             </div>

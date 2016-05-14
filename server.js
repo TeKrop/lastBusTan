@@ -7,6 +7,8 @@ var methodOverride = require('method-override'); // simulate DELETE and PUT (exp
 var http = require('http');                      // make http get request in express
 var exec = require('child_process').exec;        // allow us to execute command lines
 var watch = require('node-watch');               // watch files or directories for changes
+var _ = require('underscore');                   // some useful functions for manipulating data
+var Q = require("q");                            // use promises to chain functions (especially http get)
 
 /*************** CONFIG ***************/
 app.use(express.static(__dirname + '/public'));                                     // set the static files location
@@ -64,11 +66,10 @@ if (onlineMode === true) {
             console.log('STATUS: ' + result.statusCode);
             console.log('HEADERS: ' + JSON.stringify(result.headers));
             // Buffer the body entirely for processing as a whole.
-            var bodyChunks = [];
+            var body = '';
             result.on('data', function(chunk) {
-                bodyChunks.push(chunk);
+                body += chunk;
             }).on('end', function() {
-                var body = Buffer.concat(bodyChunks);
                 res.json(JSON.parse(body));
             });
         });
@@ -90,11 +91,10 @@ if (onlineMode === true) {
             console.log('STATUS: ' + result.statusCode);
             console.log('HEADERS: ' + JSON.stringify(result.headers));
             // Buffer the body entirely for processing as a whole.
-            var bodyChunks = [];
+            var body = '';
             result.on('data', function(chunk) {
-                bodyChunks.push(chunk);
+                body += chunk;
             }).on('end', function() {
-                var body = Buffer.concat(bodyChunks);
                 // we modify the body for selected only the lines
                 var bodyJSON = JSON.parse(body);
                 var arrayLines = [];
@@ -124,18 +124,91 @@ if (onlineMode === true) {
             path: '/ewp/tempsattente.json/' + req.params.id
         };
 
+        // main request
         var tanReq = http.get(options, function(result) {
             console.log('STATUS: ' + result.statusCode);
             console.log('HEADERS: ' + JSON.stringify(result.headers));
-            // Buffer the body entirely for processing as a whole.
-            var bodyChunks = [];
+
+            var body = '';
             result.on('data', function(chunk) {
-                // You can process streamed parts here...
-                bodyChunks.push(chunk);
+                body += chunk;
             }).on('end', function() {
-                var body = Buffer.concat(bodyChunks);
-                // ...and/or process the entire body here.
-                res.json(JSON.parse(body));
+                //res.json(JSON.parse(body));
+
+                // init variables
+                var arretsData = JSON.parse(body);
+                var codesArrets = [];
+
+                // we get the 'codeArret' and 'ligne' for the arret
+                arretsData.forEach(function(elt) {
+                    codesArrets.push({
+                        'codeArret': elt.arret.codeArret,
+                        'ligne': elt.ligne.numLigne
+                    });
+                });
+                codesArrets = _.uniq(codesArrets, 'codeArret');
+
+                // for two ways of the line, 1 and 2. Find a cleaner way.
+                var tempArray = [];
+                for (var i = 1; i < 3; i++) {
+                    codesArrets.forEach(function(elt) {
+                        tempArray.push({
+                            'codeArret': elt.codeArret,
+                            'ligne': elt.ligne,
+                            'sens': i
+                        });
+                    });
+                }
+                codesArrets = tempArray;
+
+                // we start to use promises to chain get for all arret
+                var promises = [];
+                codesArrets.forEach(function(elt) {
+                    var deferred = Q.defer();
+
+                    var options = {
+                        host: dataHostURL,
+                        path: '/ewp/horairesarret.json/' + elt.codeArret + '/' + elt.ligne + '/' + elt.sens
+                    };
+                    http.get(options, function(result) {
+                        var chunks = '';
+                        result.on('data', function(chunk) {
+                            chunks += chunk;
+                        }).on('end', function() {
+                            if (result.statusCode !== 500) {
+                                var allChunks = JSON.parse(chunks);
+                                // we add the way (sens) of the road
+                                allChunks.sens = elt.sens;
+                                deferred.resolve(allChunks);
+                            } else {
+                                deferred.resolve();
+                            }
+                        });
+                    });
+
+                    promises.push(deferred.promise);
+                });
+
+                // launch all the promises and do something when finished
+                Q.all(promises)
+                .then(function(results) {
+                    console.log('done !');
+                    // we clean the array in case we didn't found some data
+                    results = results.filter(function(n){ return n != undefined });
+                    console.log(results);
+
+                    // we return the data in a clean way
+                    var returnData = [];
+                    results.forEach(function(r) {
+                        returnData.push({
+                            'ligne': r.ligne.numLigne,
+                            'terminus': r.ligne['directionSens' + r.sens],
+                            'heure': r.prochainsHoraires[0].heure + r.prochainsHoraires[0].passages[0]
+                        });
+                    });
+                    res.json(returnData);
+
+                }, console.error);
             });
         });
 
@@ -144,6 +217,7 @@ if (onlineMode === true) {
           res.send(e);
         });
     });
+
 } else {
     app.get('/api/arrets', function(req, res) {
         var response = '[{"codeLieu":"OTAG","libelle":"50 Otages","distance":null,"ligne":[{"numLigne":"52"},{"numLigne":"12"},{"numLigne":"63"},{"numLigne":"2"},{"numLigne":"32"}]},{"codeLieu":"HMVE","libelle":"8 Mai","distance":null,"ligne":[{"numLigne":"28"},{"numLigne":"42"}]},{"codeLieu":"MAI8","libelle":"8 Mai","distance":null,"ligne":[{"numLigne":"3"},{"numLigne":"98"},{"numLigne":"97"}]},{"codeLieu":"ABDU","libelle":"Abel Durand","distance":null,"ligne":[{"numLigne":"25"}]},{"codeLieu":"AECL","libelle":"Aéroclub","distance":null,"ligne":[{"numLigne":"NA"}]},{"codeLieu":"AEPO","libelle":"Aéroport","distance":null,"ligne":[{"numLigne":"98"}]},{"codeLieu":"AESP","libelle":"Aérospatiale","distance":null,"ligne":[{"numLigne":"98"}]},{"codeLieu":"AIGU","libelle":"Aiguillon","distance":null,"ligne":[{"numLigne":"92"},{"numLigne":"75"},{"numLigne":"71"},{"numLigne":"83"},{"numLigne":"82"}]},{"codeLieu": "ADEL","libelle":"AiméDelrue","distance":null,"ligne":[{"numLigne":"3"},{"numLigne":"2"}]},{"codeLieu":"AIBU","libelle":"Airbus","distance":null,"ligne":[{"numLigne":"98"}]},{"codeLieu":"ALIE","libelle":"Allier","distance":null,"ligne":[{"numLigne":"61"},{"numLigne":"58"},{"numLigne":"24"}]},{"codeLieu":"APRE","libelle":"AmbroiseParé","distance":null,"ligne":[{"numLigne":"56"},{"numLigne":"65"},{"numLigne":"59"}]},{"codeLieu":"AMER","libelle":"Américains","distance":null,"ligne":[{"numLigne":"12"},{"numLigne":"63"},{"numLigne":"32"}]},{"codeLieu":"AMPE","libelle":"Ampère","distance":null,"ligne":[{"numLigne":"86"},{"numLigne":"63"}]},{"codeLieu":"AFRA","libelle":"AnatoleFrance","distance":null,"ligne":[{"numLigne":"22"},{"numLigne":"51"},{"numLigne":"54"},{"numLigne":"65"}]},{"codeLieu":"AGVI","libelle":"Angevinière","distance":null,"ligne":[{"numLigne":"54"},{"numLigne":"73"}]},{"codeLieu":"ACHA","libelle":"AngleChaillou","distance":null,"ligne":[{"numLigne":"96"}]},{"codeLieu":"AGTE","libelle":"Angleterre","distance":null,"ligne":[{"numLigne":"61"},{"numLigne":"58"},{"numLigne":"56"},{"numLigne":"24"}]},{"codeLieu":"ATAR","libelle":"Antarès","distance":null,"ligne":[{"numLigne":"78"}]},{"codeLieu":"ATIL","libelle":"Antilles","distance":null,"ligne":[{"numLigne":"58"},{"numLigne":"64"}]},{"codeLieu":"ANTO","libelle":"Antons","distance":null,"ligne":[{"numLigne":"80"}]},{"codeLieu":"APAV","libelle":"Apave","distance":null,"ligne":[{"numLigne":"93"}]},{"codeLieu":"AMOR","libelle":"ArMor","distance":null,"ligne":[{"numLigne":"84"}]},{"codeLieu":"ARAG","libelle":"Arago","distance":null,"ligne":[{"numLigne":"95"}]},{"codeLieu":"ARBO","libelle": "Arbois","distance":null,"ligne":[{"numLigne":"59"}]},{"codeLieu":"ARCA","libelle":"Arcades","distance":null,"ligne":[{"numLigne":"81"},{"numLigne":"91"}]},{"codeLieu":"ARGO","libelle":"Argonautes","distance":null,"ligne":[{"numLigne":"85"}]}]';
@@ -160,7 +234,6 @@ if (onlineMode === true) {
         res.json(JSON.parse(response));
     });
 }
-
 
 // create todo and send back all todos after creation
 /*app.get('/api/lignes', function(req, res) {
@@ -191,3 +264,15 @@ app.get('*', function(req, res) {
     // load the single view file (angular will handle the page changes on the front-end)
     res.sendFile('index.html', { root: __dirname + '/public' });
 });
+
+/********** FUNCTIONS **********/
+function get_all_the_things(things) {
+    return Q.all(things.map(function(thing) {
+        var deferred = Q.defer();
+        get_a_thing(thing, function(result) {
+            deferred.resolve(result);
+        });
+        return deferred.promise;
+    }));
+}
+
