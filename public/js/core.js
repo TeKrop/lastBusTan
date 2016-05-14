@@ -1,6 +1,6 @@
 var app = angular.module('lastBusTan', []);
 
-app.controller('MainController', function($rootScope, $scope, $http, $window, $document, $timeout) {
+app.controller('MainController', function($scope, $http) {
     // global variables
     $scope.loading = true;
     $scope.currentArret = '';
