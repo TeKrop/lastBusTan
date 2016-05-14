@@ -1,0 +1,78 @@
+<!-- Page Content -->
+<div class="container">
+
+    <!-- Page Heading -->
+    <div class="row">
+        <div class="col-lg-12">
+            <h1 class="page-header"><i class="glyphicon glyphicon-road"></i> Last Bus Tan
+                <small>{{ pageHeader }}</small>
+                <!-- BACK BUTTON -->
+                <button class="btn btn-raised btn-primary pull-right" ng-click="backToArrets()" ng-show="currentArret"><i class="glyphicon glyphicon-chevron-left"></i> Revenir à la liste des arrêts</button>
+            </h1>
+        </div>
+    </div>
+
+    <!-- LOADER -->
+    <div class="cssload-container" ng-show="loading">
+        <div class="cssload-zenith"></div>
+        <hr>
+    </div>
+
+    <!-- ERROR DISPLAYER -->
+    <div class="alert alert-danger" role="alert" ng-show="errorMessage">{{ errorMessage }}</div>
+
+    <!-- TIMES LIST FOR SELECTED ARRET -->
+    <div class="arrets" ng-repeat="data in arretData | orderBy:data.temps" ng-show="currentArret">
+        <!-- Project One -->
+        <div class="row panel panel-primary not-clickable">
+            <div class="panel-heading">
+                <div class="row">
+                    <div class="col-md-2">
+                        <img class="img-responsive" src="img/{{ data.ligne.numLigne }}.gif" alt="Ligne {{ ligne.numLigne }}">
+                    </div>
+                    <div class="col-md-7">
+                        <h1>{{ currentArret }}</h1>
+                        <h1>&rarr; {{ data.terminus }}</h1>
+                    </div>
+                    <div class="col-md-3 text-right">
+                        <h1 class="time">{{ data.temps }}</h1>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /.row -->
+    </div>
+
+    <!-- ARRETS LIST -->
+    <div class="arrets" ng-repeat="arret in arrets" ng-show="!currentArret">
+        <!-- Liste des arrêts -->
+        <div class="row panel panel-primary" ng-click="showArret(arret)">
+            <div class="panel-heading">
+                <div class="row">
+                    <div class="col-md-6"><h1>{{ arret.libelle }}</h1></div>
+                    <div class="col-md-6"><h1 class="text-right">{{ arret.distance }}</h1></div>
+                </div>
+            </div>
+            <div class="panel-body">
+                <div class="col-md-12">
+                    <p class="list-group-item-text">
+                        <span ng-repeat="ligne in arret.ligne">
+                            <img class="img-responsive" src="img/{{ ligne.numLigne }}.gif" alt="Ligne {{ ligne.numLigne }}" />
+                        </span>
+                    </p>
+                </div>
+            </div>
+        </div>
+        <!-- /.row -->
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="row">
+            <div class="col-lg-12 text-center">
+                <p>Copyright &copy; Valentin PORCHET 2016</p>
+            </div>
+        </div>
+        <!-- /.row -->
+    </footer>
+</div>

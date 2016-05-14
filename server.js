@@ -20,7 +20,7 @@ app.use(methodOverride());
 /*************** MODEL ***************/
 
 var dataHostURL = "open_preprod.tan.fr"; // development server
-var onlineMode = false;
+var onlineMode = true;
 //var dataHostURL = "open.tan.fr"; // production server
 
 /*************** WATCH ***************/

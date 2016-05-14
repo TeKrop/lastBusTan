@@ -15,9 +15,10 @@
     "tests"
   ],
   "dependencies": {
-    "angular": "^1.5.3",
+    "angular": "^1.5.5",
     "bootstrap": "^3.3.6",
     "underscore": "^1.8.3",
-    "bootstrap-material-design": "^0.5.9"
+    "bootstrap-material-design": "^0.5.9",
+    "angular-route": "^1.5.5"
   }
 }
