@@ -1,10 +1,11 @@
 TODOLIST
 
+==> Partie sur la liste des lignes puis arrêts
+
 ==> Lazy load lignes et arrêts avec Angular
 ==> Images manquantes des arrêts
-==> Partie sur la liste des lignes puis arrêts
-==> Order by horaire dans la liste, créer un filtre
 ==> Style mobile
-==> METTRE DES TESTS
 
+==> METTRE DES TESTS
+==> SERVICES POUR EVITER DOUBLONS DE CODE
 ==> Voir si Underscore.js vraiment nécessaire dans bower

@@ -38,7 +38,7 @@ lastBusTanControllers.controller('ArretsProchesCtrl', function($scope, $http) {
     });
 
     // when we click on a "arret", display data about it
-    $scope.showArret = function(arret) {
+    $scope.showArret =  function(arret) {
         $scope.loading = true;
         $scope.currentArret = arret.libelle;
         $scope.pageHeader = 'Arrêt ' + arret.libelle;
@@ -61,6 +61,24 @@ lastBusTanControllers.controller('ArretsProchesCtrl', function($scope, $http) {
         $scope.errorMessage = false;
         $scope.arretData = [];
         $scope.pageHeader = 'Arrêts proches';
+    };
+
+    // order by for arret list of hours
+    $scope.hourIncreasing = function(arret) {
+        var arretArray = arret.heure.split('h');
+
+        var hours = parseInt(arretArray[0]);
+        var minutes = arretArray[1];
+        // if the last char is not a number (it can happen sometimes), we substract it
+        if (isNaN(parseInt(minutes[minutes.length-1]))) {
+            minutes = minutes.substr(0, minutes.length-1);
+        }
+
+        // we only have hours between 6am and 2am, so we use it
+        if (hours < 4) { hours += 24; }
+
+        // we return the total minutes for comparison
+        return hours*60 + minutes;
     };
 });
 
@@ -113,7 +131,7 @@ lastBusTanControllers.controller('ArretsCtrl', function($scope, $http) {
         });
 
     // when we click on a "arret", display data about it
-    $scope.showArret = function(arret) {
+    $scope.showArret =  function(arret) {
         $scope.loading = true;
         $scope.currentArret = arret.libelle;
         $scope.pageHeader = 'Arrêt ' + arret.libelle;
@@ -136,5 +154,23 @@ lastBusTanControllers.controller('ArretsCtrl', function($scope, $http) {
         $scope.errorMessage = false;
         $scope.arretData = [];
         $scope.pageHeader = 'Liste des arrêts';
+    };
+
+    // order by for arret list of hours
+    $scope.hourIncreasing = function(arret) {
+        var arretArray = arret.heure.split('h');
+
+        var hours = parseInt(arretArray[0]);
+        var minutes = arretArray[1];
+        // if the last char is not a number (it can happen sometimes), we substract it
+        if (isNaN(parseInt(minutes[minutes.length-1]))) {
+            minutes = minutes.substr(0, minutes.length-1);
+        }
+
+        // we only have hours between 6am and 2am, so we use it
+        if (hours < 4) { hours += 24; }
+
+        // we return the total minutes for comparison
+        return hours*60 + minutes;
     };
 });

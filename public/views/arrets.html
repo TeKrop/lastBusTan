@@ -22,7 +22,7 @@
     <div class="alert alert-danger" role="alert" ng-show="errorMessage">{{ errorMessage }}</div>
 
     <!-- TIMES LIST FOR SELECTED ARRET -->
-    <div class="arrets" ng-repeat="data in arretData | orderBy:data.heure" ng-show="currentArret">
+    <div class="arrets" ng-repeat="data in arretData | orderBy:hourIncreasing" ng-show="currentArret">
         <!-- Project One -->
         <div class="row panel panel-primary not-clickable">
             <div class="panel-heading">
