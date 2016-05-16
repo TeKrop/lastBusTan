@@ -120,18 +120,40 @@ app.get('/api/lignes', function(req, res) {
             body += chunk;
         }).on('end', function() {
             // we modify the body for selected only the lines
-            var bodyJSON = JSON.parse(body);
-            var arrayLines = [];
+            var arretsData = JSON.parse(body);
+            var lignesData = [];
 
-            for (var i=0; i < bodyJSON.length; i++) {
-                for (var j=0; j < bodyJSON[i].ligne.length; j++) {
-                    console.log(arrayLines.indexOf(bodyJSON[i].ligne[j]));
-                    if (arrayLines.indexOf(bodyJSON[i].ligne[j]) === -1) {
-                        arrayLines.push(bodyJSON[i].ligne[j]);
+            // for each arrets, we take the ligne number
+            arretsData.forEach(function(arret) {
+                arret.ligne.forEach(function(ligne) {
+                    var alreadyHere = false;
+                    // we explore the lignesData and search if the ligne is existing
+                    for (var i=0; i < lignesData.length; i++) {
+                        if (lignesData[i].numLigne === ligne.numLigne) {
+                            alreadyHere = true;
+                            lignesData[i].arrets.push({
+                                codeLieu: arret.codeLieu,
+                                libelle: arret.libelle
+                            });
+                            break;
+                        }
                     }
-                }
-            }
-            res.json(arrayLines);
+
+                    // if ligne isn't already in the array, insert it with the arret
+                    if (!alreadyHere) {
+                        lignesData.push({
+                            numLigne: ligne.numLigne,
+                            arrets: [{
+                                codeLieu: arret.codeLieu,
+                                libelle: arret.libelle
+                            }],
+                            showArrets: false
+                        });
+                    }
+                });
+            });
+
+            res.json(lignesData);
         });
     });
 
@@ -181,6 +203,7 @@ app.get('/api/arret/:id', function(req, res) {
                     host: dataHostURL,
                     path: '/ewp/horairesarret.json/' + elt.codeArret + '/' + elt.ligne + '/' + elt.sens
                 };
+
                 http.get(options, function(result) {
                     var chunks = '';
                     result.on('data', function(chunk) {
@@ -215,6 +238,7 @@ app.get('/api/arret/:id', function(req, res) {
                         'heure': _.last(r.horaires).heure + _.last(_.last(r.horaires).passages)
                     });
                 });
+
                 res.json(returnData);
 
             }, console.error);

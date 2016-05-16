@@ -1,11 +1,11 @@
 TODOLIST
 
-==> Partie sur la liste des lignes puis arrêts
-
+==> Obtenir les deux terminus de lignes
 ==> Lazy load lignes et arrêts avec Angular
 ==> Images manquantes des arrêts
 ==> Style mobile
 
 ==> METTRE DES TESTS
 ==> SERVICES POUR EVITER DOUBLONS DE CODE
+==> Compilation du js en min ?
 ==> Voir si Underscore.js vraiment nécessaire dans bower

@@ -47,7 +47,7 @@ lastBusTanControllers.controller('ArretsProchesCtrl', function($scope, $http) {
                 $scope.arretData = data;
                 $scope.loading = false;
                 if (data.length === 0) {
-                    $scope.errorMessage = 'Erreur : aucune donnée pour cet arrêt';
+                    $scope.errorMessage = 'Erreur : aucune donnée pour l\'arrêt ' + arret.libelle;
                 }
             })
             .error(function(data) {
@@ -58,6 +58,7 @@ lastBusTanControllers.controller('ArretsProchesCtrl', function($scope, $http) {
     // when we click on the back button, return on the list
     $scope.backToArrets = function() {
         $scope.currentArret = false;
+        $scope.loading = false;
         $scope.errorMessage = false;
         $scope.arretData = [];
         $scope.pageHeader = 'Arrêts proches';
@@ -85,31 +86,79 @@ lastBusTanControllers.controller('ArretsProchesCtrl', function($scope, $http) {
 lastBusTanControllers.controller('LignesCtrl', function($scope, $http) {
     // global variables
     $scope.loading = true;
-    $scope.currentArret = '';
+    $scope.currentArret = false;
     $scope.pageHeader = 'Liste des lignes';
+    $scope.errorDisplay = false;
+    $scope.arretData = [];
 
     // when landing on the page, get all todos and show them
-    $http.get('/api/arrets')
+    $http.get('/api/lignes')
         .success(function(data) {
-            //$scope.nbArrets = _.size(_.countBy(data, function(data) { return data.libelle; }));
-            $scope.arrets = data;
+            $scope.lignes = data;
+            //$scope.arrets = data;
             $scope.loading = false;
         })
         .error(function(data) {
             console.log('Error: ' + data);
         });
 
-    //
-    /*$http.get('/api/lignes')
-        .success(function(data) {
-            console.log(data);
-            $scope.nbLignes = data.length;
-            $scope.lignes = data;
-            $scope.loading = false;
-        })
-        .error(function(data) {
-            console.log('Error: ' + data);
-        });*/
+    $scope.toggleArrets = function(ligne) {
+        ligne.showArrets = !ligne.showArrets;
+    };
+
+    // when we click on a "arret", display data about it (with specific line)
+    $scope.showArret =  function(ligne, arret) {
+        $scope.loading = true;
+        $scope.currentArret = arret.libelle;
+        $scope.pageHeader = 'Ligne ' + ligne.numLigne + ' - Arrêt ' + arret.libelle;
+        $http.get('/api/arret/' + arret.codeLieu)
+            .success(function(data) {
+                // we filter the received data, only selecting hours for the selected "ligne"
+                data = data.filter(function(d) {
+                    return d.ligne === ligne.numLigne;
+                });
+                $scope.arretData = data;
+                $scope.loading = false;
+                if (data.length === 0) {
+                    $scope.errorMessage = 'Erreur : aucune donnée pour l\'arrêt ' + arret.libelle + ' sur la ligne ' + ligne.numLigne;
+                }
+            })
+            .error(function(data) {
+                console.log('Error: ' + data);
+            });
+    };
+
+    // when we click on the back button, return on the list
+    $scope.backToLignes = function() {
+        $scope.currentArret = false;
+        $scope.loading = false;
+        $scope.errorMessage = false;
+        $scope.arretData = [];
+        $scope.pageHeader = 'Liste des lignes';
+    };
+
+    // order by for lignes
+    $scope.ligneOrder = function(ligne) {
+        return isNaN(parseInt(ligne.numLigne)) ? ligne.numLigne : parseInt(ligne.numLigne);
+    };
+
+    // order by for arret list of hours
+    $scope.hourIncreasing = function(arret) {
+        var arretArray = arret.heure.split('h');
+
+        var hours = parseInt(arretArray[0]);
+        var minutes = arretArray[1];
+        // if the last char is not a number (it can happen sometimes), we substract it
+        if (isNaN(parseInt(minutes[minutes.length-1]))) {
+            minutes = minutes.substr(0, minutes.length-1);
+        }
+
+        // we only have hours between 6am and 2am, so we use it
+        if (hours < 4) { hours += 24; }
+
+        // we return the total minutes for comparison
+        return hours*60 + minutes;
+    };
 });
 
 lastBusTanControllers.controller('ArretsCtrl', function($scope, $http) {
@@ -140,7 +189,7 @@ lastBusTanControllers.controller('ArretsCtrl', function($scope, $http) {
                 $scope.arretData = data;
                 $scope.loading = false;
                 if (data.length === 0) {
-                    $scope.errorMessage = 'Erreur : aucune donnée pour cet arrêt';
+                    $scope.errorMessage = 'Erreur : aucune donnée pour l\'arrêt ' + arret.libelle;
                 }
             })
             .error(function(data) {
@@ -151,6 +200,7 @@ lastBusTanControllers.controller('ArretsCtrl', function($scope, $http) {
     // when we click on the back button, return on the list
     $scope.backToArrets = function() {
         $scope.currentArret = false;
+        $scope.loading = false;
         $scope.errorMessage = false;
         $scope.arretData = [];
         $scope.pageHeader = 'Liste des arrêts';
