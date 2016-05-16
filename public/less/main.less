@@ -1,7 +1,8 @@
 /*********** MAIN CODE ***********/
 
 html {
-    overflow-y:scroll;
+    overflow-y: scroll;
+    overflow-x: hidden;
 }
 
 body {
@@ -45,8 +46,10 @@ footer {
             cursor: pointer;
             h1 {
                 margin-top: 10px;
-                font-size: 60px;
                 font-weight: bold;
+                &.chevron {
+                    font-size: 60px;
+                }
             }
             img {
                 display: inline-block;

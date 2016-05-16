@@ -1,6 +1,5 @@
 TODOLIST
 
-==> Obtenir les deux terminus de lignes
 ==> Lazy load lignes et arrêts avec Angular
 ==> Images manquantes des arrêts
 ==> Style mobile
@@ -9,3 +8,4 @@ TODOLIST
 ==> SERVICES POUR EVITER DOUBLONS DE CODE
 ==> Compilation du js en min ?
 ==> Voir si Underscore.js vraiment nécessaire dans bower
+==> Voir pour bug de chargement parfois
