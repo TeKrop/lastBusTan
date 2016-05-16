@@ -153,45 +153,9 @@ app.get('/api/lignes', function(req, res) {
                 });
             });
 
-            // for each ligne data, we will get the terminus in both side
-            var promises = [];
-            lignesData.forEach(function(ligneData) {
-                var deferred = Q.defer();
-                // we take the first arret of the line, and get both terminus
-                var options = {
-                    host: dataHostURL,
-                    path: '/ewp/tempsattente.json/' + ligneData.arrets[0].codeLieu
-                };
-                http.get(options, function(result) {
-                    var chunks = '';
-                    result.on('data', function(chunk) {
-                        chunks += chunk;
-                    }).on('end', function() {
-                        if (result.statusCode !== 500) {
-                            var attenteData = JSON.parse(chunks);
-                            // we get only the data concerning the current ligne
-                            attenteData = attenteData.filter(function(data) {
-                                return data.ligne.numLigne == ligneData.numLigne;
-                            });
-                            // then we only keep data for both sens
-                            attenteData = _.uniq(attenteData, 'sens');
-                            // and we save it
-                            for (var i=1; i < attenteData.length+1; i++) {
-                                ligneData['directionSens' + i] = attenteData[i-1].terminus;
-                            }
-                        }
-                        deferred.resolve();
-                    });
-                });
-                promises.push(deferred.promise);
-            });
+            console.log(lignesData);
 
-            // launch all the promises and do something when finished
-            Q.all(promises)
-            .then(function() {
-                // we return the data when finished
-                res.json(lignesData);
-            }, console.error);
+            res.json(lignesData);
         });
     });
 

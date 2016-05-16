@@ -84,18 +84,27 @@ lastBusTanControllers.controller('ArretsProchesCtrl', function($scope, $http) {
 });
 
 lastBusTanControllers.controller('LignesCtrl', function($scope, $http) {
+    // global internal variables
+    var lignesLoaded = null;
+    var lastLigne = null;
+    var loadingStep = 10;
+
     // global variables
     $scope.loading = true;
     $scope.currentArret = false;
     $scope.pageHeader = 'Liste des lignes';
     $scope.errorDisplay = false;
     $scope.arretData = [];
+    $scope.lignes = [];
 
     // when landing on the page, get all todos and show them
     $http.get('/api/lignes')
         .success(function(data) {
-            $scope.lignes = data;
-            //$scope.arrets = data;
+            lignesLoaded = data;
+            for (var i=0; i < loadingStep; i++) {
+                $scope.lignes.push(lignesLoaded[i]);
+            }
+            lastLigne = loadingStep;
             $scope.loading = false;
         })
         .error(function(data) {
@@ -126,6 +135,18 @@ lastBusTanControllers.controller('LignesCtrl', function($scope, $http) {
             .error(function(data) {
                 console.log('Error: ' + data);
             });
+    };
+
+    // use for lazy loading : we load lignes step by step (loadingStep)
+    $scope.showMoreLignes = function() {
+        // if we loaded the data
+        if (lastLigne !== null) {
+            // we show 10 more lignes
+            for (var i = lastLigne; i < lastLigne + loadingStep; i++) {
+                $scope.lignes.push(lignesLoaded[i]);
+            }
+            lastLigne += loadingStep;
+        }
     };
 
     // when we click on the back button, return on the list
@@ -162,17 +183,27 @@ lastBusTanControllers.controller('LignesCtrl', function($scope, $http) {
 });
 
 lastBusTanControllers.controller('ArretsCtrl', function($scope, $http) {
-    // global variables
+    // global internal variables
+    var arretsLoaded = null;
+    var lastArret = null;
+    var loadingStep = 10;
+
+    // global scope variables
     $scope.loading = true;
     $scope.currentArret = false;
     $scope.pageHeader = 'Liste des arrêts';
     $scope.errorDisplay = false;
     $scope.arretData = [];
+    $scope.arrets = [];
 
     // get the arrets with api
     $http.get('/api/arrets')
         .success(function(data) {
-            $scope.arrets = data;
+            arretsLoaded = data;
+            for (var i=0; i < loadingStep; i++) {
+                $scope.arrets.push(arretsLoaded[i]);
+            }
+            lastArret = loadingStep;
             $scope.loading = false;
         })
         .error(function(data) {
@@ -195,6 +226,18 @@ lastBusTanControllers.controller('ArretsCtrl', function($scope, $http) {
             .error(function(data) {
                 console.log('Error: ' + data);
             });
+    };
+
+    // use for lazy loading : we load arrets step by step (loadingStep)
+    $scope.showMoreArrets = function() {
+        // if we loaded the data
+        if (lastArret !== null) {
+            // we show 10 more arrets
+            for (var i = lastArret; i < lastArret + loadingStep; i++) {
+                $scope.arrets.push(arretsLoaded[i]);
+            }
+            lastArret += loadingStep;
+        }
     };
 
     // when we click on the back button, return on the list

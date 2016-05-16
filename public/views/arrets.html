@@ -44,25 +44,26 @@
     </div>
 
     <!-- ARRETS LIST -->
-    <div class="arrets" ng-repeat="arret in arrets" ng-show="!currentArret">
-        <!-- Liste des arrêts -->
-        <div class="row panel panel-primary" ng-click="showArret(arret)">
-            <div class="panel-heading">
-                <div class="row">
-                    <div class="col-md-6"><h1>{{ arret.libelle }}</h1></div>
-                    <div class="col-md-6"><h1 class="text-right">{{ arret.distance }}</h1></div>
+    <div infinite-scroll="showMoreArrets()" infinite-scroll-distance="1">
+        <div class="arrets" ng-repeat="arret in arrets" ng-show="!currentArret">
+            <div class="row panel panel-primary" ng-click="showArret(arret)">
+                <div class="panel-heading">
+                    <div class="row">
+                        <div class="col-md-6"><h1>{{ arret.libelle }}</h1></div>
+                        <div class="col-md-6"><h1 class="text-right">{{ arret.distance }}</h1></div>
+                    </div>
+                </div>
+                <div class="panel-body">
+                    <div class="col-md-12">
+                        <p class="list-group-item-text">
+                            <span ng-repeat="ligne in arret.ligne">
+                                <img class="img-responsive" src="img/{{ ligne.numLigne }}.gif" alt="Ligne {{ ligne.numLigne }}" />
+                            </span>
+                        </p>
+                    </div>
                 </div>
             </div>
-            <div class="panel-body">
-                <div class="col-md-12">
-                    <p class="list-group-item-text">
-                        <span ng-repeat="ligne in arret.ligne">
-                            <img class="img-responsive" src="img/{{ ligne.numLigne }}.gif" alt="Ligne {{ ligne.numLigne }}" />
-                        </span>
-                    </p>
-                </div>
-            </div>
+            <!-- /.row -->
         </div>
-        <!-- /.row -->
     </div>
 </div>

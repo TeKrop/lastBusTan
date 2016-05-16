@@ -1,4 +1,4 @@
-var app = angular.module('lastBusTan', ['ngRoute', 'lastBusTanControllers']);
+var app = angular.module('lastBusTan', ['ngRoute', 'infinite-scroll', 'lastBusTanControllers']);
 
 // application configuration
 app.config(['$routeProvider', function ($routeProvider) {

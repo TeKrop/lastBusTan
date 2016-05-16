@@ -43,33 +43,31 @@
         <!-- /.row -->
     </div>
 
-    <div class="lignes" ng-repeat="ligne in lignes | orderBy:ligneOrder" ng-show="!currentArret">
-        <div class="row panel panel-primary">
-            <div class="panel-heading" ng-click="toggleArrets(ligne)">
-                <div class="row">
-                    <div class="col-md-2">
-                        <img class="img-responsive" src="img/{{ ligne.numLigne }}.gif" alt="Ligne {{ ligne.numLigne }}">
+    <div class="row" infinite-scroll="showMoreLignes()" infinite-scroll-distance="1">
+        <div class="lignes" ng-repeat="ligne in lignes | orderBy:ligneOrder" ng-show="!currentArret">
+            <div class="col-md-3 panel panel-primary">
+                <div class="panel-heading" ng-click="toggleArrets(ligne)">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <img class="img-responsive" src="img/{{ ligne.numLigne }}.gif" alt="Ligne {{ ligne.numLigne }}">
+                        </div>
+                        <div class="col-md-6 text-right">
+                            <h1 class="chevron">
+                                <i class="glyphicon glyphicon-chevron-down" ng-show="!ligne.showArrets"></i>
+                                <i class="glyphicon glyphicon-chevron-up" ng-show="ligne.showArrets"></i>
+                            </h1>
+                        </div>
                     </div>
-                    <div class="col-md-7">
-                        <h1>{{ ligne.directionSens1 }}</h1>
-                        <h1>{{ ligne.directionSens2 }}</h1>
-                    </div>
-                    <div class="col-md-3 text-right">
-                        <h1 class="chevron">
-                            <i class="glyphicon glyphicon-chevron-down" ng-show="!ligne.showArrets"></i>
-                            <i class="glyphicon glyphicon-chevron-up" ng-show="ligne.showArrets"></i>
-                        </h1>
+                </div>
+                <div class="panel-body" ng-show="ligne.showArrets">
+                    <div class="col-md-12">
+                        <div ng-repeat="arret in ligne.arrets">
+                            <p class="list-group-item-text" ng-click="showArret(ligne, arret)">{{ arret.libelle }}</p>
+                        </div>
                     </div>
                 </div>
             </div>
-            <div class="panel-body" ng-show="ligne.showArrets">
-                <div class="col-md-12">
-                    <div ng-repeat="arret in ligne.arrets">
-                        <p class="list-group-item-text" ng-click="showArret(ligne, arret)">{{ arret.libelle }}</p>
-                    </div>
-                </div>
-            </div>
+            <!-- /.row -->
         </div>
-        <!-- /.row -->
     </div>
 </div>
