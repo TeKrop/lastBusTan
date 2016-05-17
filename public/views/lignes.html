@@ -44,12 +44,12 @@
     </div>
 
     <div class="row" infinite-scroll="showMoreLignes()" infinite-scroll-distance="1">
-        <div class="lignes" ng-repeat="ligne in lignes | orderBy:ligneOrder" ng-show="!currentArret">
-            <div class="col-md-3 panel panel-primary">
+        <div class="col-md-4 lignes" ng-repeat="ligne in lignes | orderBy:ligneOrder" ng-show="!currentArret">
+            <div class="panel panel-primary">
                 <div class="panel-heading" ng-click="toggleArrets(ligne)">
                     <div class="row">
                         <div class="col-md-6">
-                            <img class="img-responsive" src="img/{{ ligne.numLigne }}.gif" alt="Ligne {{ ligne.numLigne }}">
+                            <img class="img-responsive" hires="img/{{ ligne.numLigne }}.gif" src="img/1.gif" alt="Ligne {{ ligne.numLigne }}">
                         </div>
                         <div class="col-md-6 text-right">
                             <h1 class="chevron">

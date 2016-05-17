@@ -22,7 +22,6 @@ app.use(methodOverride());
 /*************** MODEL ***************/
 
 var dataHostURL = "open_preprod.tan.fr"; // development server
-var onlineMode = true;
 //var dataHostURL = "open.tan.fr"; // production server
 
 /*************** WATCH ***************/
@@ -54,7 +53,7 @@ console.log("Listening on port 8080");
 
 /********** API **********/
 
-// get all arrets
+// get all "arrets"
 app.get('/api/arrets', function(req, res) {
     var options = {
         host: dataHostURL,
@@ -79,7 +78,7 @@ app.get('/api/arrets', function(req, res) {
     });
 });
 
-// get all arrets with distance to user (only arrets with < 500m distance)
+// get all "arrets" with distance to user (only "arrets" with < 500m distance)
 app.get('/api/arrets/:latitude/:longitude', function(req, res) {
     var options = {
         host: dataHostURL,
@@ -104,7 +103,7 @@ app.get('/api/arrets/:latitude/:longitude', function(req, res) {
     });
 });
 
-// get lines details
+// get "lignes" details
 app.get('/api/lignes', function(req, res) {
     var options = {
         host: dataHostURL,
@@ -119,15 +118,14 @@ app.get('/api/lignes', function(req, res) {
         result.on('data', function(chunk) {
             body += chunk;
         }).on('end', function() {
-            // we modify the body for selected only the lines
             var arretsData = JSON.parse(body);
             var lignesData = [];
 
-            // for each arrets, we take the ligne number
+            // for each "arret", we take the "ligne" number
             arretsData.forEach(function(arret) {
                 arret.ligne.forEach(function(ligne) {
                     var alreadyHere = false;
-                    // we explore the lignesData and search if the ligne is existing
+                    // we explore the lignesData and search if the "ligne" is existing
                     for (var i=0; i < lignesData.length; i++) {
                         if (lignesData[i].numLigne === ligne.numLigne) {
                             alreadyHere = true;
@@ -139,7 +137,7 @@ app.get('/api/lignes', function(req, res) {
                         }
                     }
 
-                    // if ligne isn't already in the array, insert it with the arret
+                    // if "ligne" isn't already in the array, insert it with the arret
                     if (!alreadyHere) {
                         lignesData.push({
                             numLigne: ligne.numLigne,
@@ -153,7 +151,10 @@ app.get('/api/lignes', function(req, res) {
                 });
             });
 
-            console.log(lignesData);
+            // then, we remove some incorrect "lignes" of the API (1B, 105, LU)
+            lignesData = lignesData.filter(function(elt) {
+                return ['1B', '105', 'LU'].indexOf(elt.numLigne) === -1;
+            });
 
             res.json(lignesData);
         });
@@ -193,10 +194,10 @@ app.get('/api/arret/:id', function(req, res) {
                     'sens': elt.sens
                 });
             });
-            // as we have several records for each arret, we just want one
+            // as we have several records for each "arret", we just want one
             codesArrets = _.uniq(codesArrets, 'codeArret');
 
-            // we start to use promises to chain get for all arret
+            // we start to use promises to chain get for all "arret"
             var promises = [];
             codesArrets.forEach(function(elt) {
                 var deferred = Q.defer();
@@ -228,7 +229,7 @@ app.get('/api/arret/:id', function(req, res) {
             // launch all the promises and do something when finished
             Q.all(promises)
             .then(function(results) {
-                // we clean the array in case we didn't found some data
+                // we clean the array in case we didn't find some data
                 results = results.filter(function(n){ return n != undefined });
 
                 // we return the data in a clean way

@@ -141,8 +141,8 @@ lastBusTanControllers.controller('LignesCtrl', function($scope, $http) {
     $scope.showMoreLignes = function() {
         // if we loaded the data
         if (lastLigne !== null) {
-            // we show 10 more lignes
-            for (var i = lastLigne; i < lastLigne + loadingStep; i++) {
+            // we show 10 more lignes (or less if we are at the end)
+            for (var i = lastLigne; i < lastLigne + loadingStep && i < lignesLoaded.length; i++) {
                 $scope.lignes.push(lignesLoaded[i]);
             }
             lastLigne += loadingStep;
@@ -160,7 +160,9 @@ lastBusTanControllers.controller('LignesCtrl', function($scope, $http) {
 
     // order by for lignes
     $scope.ligneOrder = function(ligne) {
-        return isNaN(parseInt(ligne.numLigne)) ? ligne.numLigne : parseInt(ligne.numLigne);
+        if (ligne !== undefined) {
+            return isNaN(parseInt(ligne.numLigne)) ? ligne.numLigne : parseInt(ligne.numLigne);
+        }
     };
 
     // order by for arret list of hours
@@ -233,7 +235,7 @@ lastBusTanControllers.controller('ArretsCtrl', function($scope, $http) {
         // if we loaded the data
         if (lastArret !== null) {
             // we show 10 more arrets
-            for (var i = lastArret; i < lastArret + loadingStep; i++) {
+            for (var i = lastArret; i < lastArret + loadingStep && i < arretsLoaded.length; i++) {
                 $scope.arrets.push(arretsLoaded[i]);
             }
             lastArret += loadingStep;
