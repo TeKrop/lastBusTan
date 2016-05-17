@@ -3,12 +3,13 @@ TODOLIST
 ## BUGS
 ==> BUG VISUEL NAVBAR
 ==> Bug : ordonnancement des lignes (le 4 n'apparaît pas de suite...)
+==> Style mobile à corriger
 ==> Voir pour bug de chargement parfois (Commerce)
 
 ## TODO
 ==> METTRE DES TESTS
 ==> SERVICES POUR EVITER DOUBLONS DE CODE
+==> Champ de recherche dans arrêts
+==> Transformer les lignes en SELECT sur la liste des lignes (bug actuellement sur mobile)
 
 ## AMELIORATIONS
-==> Champ de recherche dans arrêts ?
-==> Transformer les lignes en SELECT sur la liste des lignes ? (voir en fonction de confort quand manipulation depuis mobile)

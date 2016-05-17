@@ -153,7 +153,7 @@ app.get('/api/lignes', function(req, res) {
 
             // then, we remove some incorrect "lignes" of the API (1B, 105, LU)
             lignesData = lignesData.filter(function(elt) {
-                return ['1B', '105', 'LU'].indexOf(elt.numLigne) === -1;
+                return ['1B', '105'].indexOf(elt.numLigne) === -1;
             });
 
             res.json(lignesData);
