@@ -1,12 +1,9 @@
 TODOLIST
 
-==> Style mobile
-
 ==> METTRE DES TESTS
 ==> SERVICES POUR EVITER DOUBLONS DE CODE
-
 ==> Compilation du js en min ?
 ==> Champ de recherche dans arrêts ?
-==> Transformer les lignes en SELECT sur la liste des lignes ?
+==> Transformer les lignes en SELECT sur la liste des lignes ? (voir en fonction de confort quand manipulation depuis mobile)
 ==> Voir pour bug de chargement parfois (Commerce)
 ==> Voir si Underscore.js vraiment nécessaire dans bower

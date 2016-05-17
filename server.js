@@ -30,8 +30,8 @@ var dataHostURL = "open_preprod.tan.fr"; // development server
 watch('public/less/main.less', function(filename) {
     console.log('[node-watch]', filename, 'changed. Compiling...');
     // we render the main.less file into main.css (minified)
-    exec("lessc -x public/less/main.less public/css/main.css", function(error, stdout, stderr) {
-        console.log('[node-watch] main.css file compiled.');
+    exec("lessc -x public/less/main.less public/css/style.css", function(error, stdout, stderr) {
+        console.log('[node-watch] style.css file compiled.');
         if (stdout !== '') {
             console.log('[node-watch] stdout: ' + stdout);
         }
