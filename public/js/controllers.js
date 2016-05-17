@@ -26,6 +26,8 @@ lastBusTanControllers.controller('ArretsProchesCtrl', function($scope, $http) {
             })
             .error(function(data) {
                 console.log('Error: ' + data);
+                $scope.loading = false;
+                $scope.errorMessage = 'Erreur pendant le chargement des données';
             });
     },
     function (error) {
@@ -52,6 +54,8 @@ lastBusTanControllers.controller('ArretsProchesCtrl', function($scope, $http) {
             })
             .error(function(data) {
                 console.log('Error: ' + data);
+                $scope.loading = false;
+                $scope.errorMessage = 'Erreur pendant le chargement des données';
             });
     };
 
@@ -100,7 +104,11 @@ lastBusTanControllers.controller('LignesCtrl', function($scope, $http) {
     // when landing on the page, get all todos and show them
     $http.get('/api/lignes')
         .success(function(data) {
-            lignesLoaded = data;
+            // we take the data, and order it here, in order to avoid issues
+            // with orderBy + infinite scroll on HTML
+            lignesLoaded = data.sort(function(a, b) {
+                return a.numLigne - b.numLigne;
+            });
             for (var i=0; i < loadingStep; i++) {
                 $scope.lignes.push(lignesLoaded[i]);
             }
@@ -109,6 +117,8 @@ lastBusTanControllers.controller('LignesCtrl', function($scope, $http) {
         })
         .error(function(data) {
             console.log('Error: ' + data);
+            $scope.errorMessage = 'Erreur pendant le chargement des données';
+            $scope.loading = false;
         });
 
     $scope.toggleArrets = function(ligne) {
@@ -134,6 +144,8 @@ lastBusTanControllers.controller('LignesCtrl', function($scope, $http) {
             })
             .error(function(data) {
                 console.log('Error: ' + data);
+                $scope.errorMessage = 'Erreur pendant le chargement des données';
+                $scope.loading = false;
             });
     };
 
@@ -210,6 +222,8 @@ lastBusTanControllers.controller('ArretsCtrl', function($scope, $http) {
         })
         .error(function(data) {
             console.log('Error: ' + data);
+            $scope.errorMessage = 'Erreur pendant le chargement des données';
+            $scope.loading = false;
         });
 
     // when we click on a "arret", display data about it
@@ -227,6 +241,8 @@ lastBusTanControllers.controller('ArretsCtrl', function($scope, $http) {
             })
             .error(function(data) {
                 console.log('Error: ' + data);
+                $scope.errorMessage = 'Erreur pendant le chargement des données';
+                $scope.loading = false;
             });
     };
 
