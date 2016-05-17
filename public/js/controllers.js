@@ -42,6 +42,7 @@ lastBusTanControllers.controller('ArretsProchesCtrl', function($scope, $http) {
     // when we click on a "arret", display data about it
     $scope.showArret =  function(arret) {
         $scope.loading = true;
+        $scope.errorMessage = false;
         $scope.currentArret = arret.libelle;
         $scope.pageHeader = 'Arrêt ' + arret.libelle;
         $http.get('/api/arret/' + arret.codeLieu)
@@ -128,6 +129,10 @@ lastBusTanControllers.controller('LignesCtrl', function($scope, $http) {
     // when we click on a "arret", display data about it (with specific line)
     $scope.showArret =  function(ligne, arret) {
         $scope.loading = true;
+        $scope.errorMessage = false;
+
+        ligne.showArrets = false;
+
         $scope.currentArret = arret.libelle;
         $scope.pageHeader = 'Ligne ' + ligne.numLigne + ' - Arrêt ' + arret.libelle;
         $http.get('/api/arret/' + arret.codeLieu)
@@ -229,6 +234,7 @@ lastBusTanControllers.controller('ArretsCtrl', function($scope, $http) {
     // when we click on a "arret", display data about it
     $scope.showArret =  function(arret) {
         $scope.loading = true;
+        $scope.errorMessage = false;
         $scope.currentArret = arret.libelle;
         $scope.pageHeader = 'Arrêt ' + arret.libelle;
         $http.get('/api/arret/' + arret.codeLieu)

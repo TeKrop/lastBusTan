@@ -3,11 +3,11 @@
 
     <!-- Page Heading -->
     <div class="row">
-        <div class="col-lg-12">
+        <div class="col-lg-12 page-header">
             <h1 class="page-header"><i class="glyphicon glyphicon-road"></i> Last Bus Tan
                 <small>{{ pageHeader }}</small>
                 <!-- BACK BUTTON -->
-                <button class="btn btn-raised btn-primary pull-right" ng-click="backToLignes()" ng-show="currentArret"><i class="glyphicon glyphicon-chevron-left"></i> Revenir à la liste des arrêts</button>
+                <button class="btn btn-raised btn-primary pull-right" ng-click="backToLignes()" ng-show="currentArret"><i class="glyphicon glyphicon-chevron-left"></i> Revenir à la liste des lignes</button>
             </h1>
         </div>
     </div>
@@ -24,17 +24,17 @@
     <!-- /.row -->
     <div class="arrets" ng-repeat="data in arretData | orderBy:hourIncreasing" ng-show="currentArret">
         <!-- Project One -->
-        <div class="row panel panel-primary not-clickable">
+        <div class="panel panel-primary not-clickable">
             <div class="panel-heading">
                 <div class="row">
-                    <div class="col-md-2">
+                    <div class="col-md-2 col-xs-3">
                         <img class="img-responsive" src="img/{{ data.ligne }}.gif" alt="Ligne {{ data.ligne }}">
                     </div>
-                    <div class="col-md-7">
+                    <div class="col-md-7 col-xs-6">
                         <h1>{{ currentArret }}</h1>
                         <h1>&rarr; {{ data.terminus }}</h1>
                     </div>
-                    <div class="col-md-3 text-right">
+                    <div class="col-md-3 col-xs-3 text-right">
                         <h1 class="time">{{ data.heure }}</h1>
                     </div>
                 </div>
@@ -43,15 +43,16 @@
         <!-- /.row -->
     </div>
 
+    <!-- LIGNES -->
     <div class="row" infinite-scroll="showMoreLignes()" infinite-scroll-distance="1">
-        <div class="col-md-4 lignes" ng-repeat="ligne in lignes | orderBy:ligneOrder" ng-show="!currentArret">
+        <div class="col-md-4 col-xs-6 lignes" ng-repeat="ligne in lignes | orderBy:ligneOrder" ng-show="!currentArret">
             <div class="panel panel-primary">
                 <div class="panel-heading" ng-click="toggleArrets(ligne)">
                     <div class="row">
-                        <div class="col-md-6">
+                        <div class="col-md-6 col-xs-6">
                             <img class="img-responsive" src="img/{{ ligne.numLigne }}.gif" alt="Ligne {{ ligne.numLigne }}">
                         </div>
-                        <div class="col-md-6 text-right">
+                        <div class="col-md-6 col-xs-6 text-right">
                             <h1 class="chevron">
                                 <i class="glyphicon glyphicon-chevron-down" ng-show="!ligne.showArrets"></i>
                                 <i class="glyphicon glyphicon-chevron-up" ng-show="ligne.showArrets"></i>
@@ -68,6 +69,6 @@
                 </div>
             </div>
             <!-- /.row -->
-        </div>
+        </select>
     </div>
 </div>

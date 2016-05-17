@@ -10,11 +10,25 @@ body {
 }
 
 footer {
-    margin: 50px 0;
+    margin: 15px 0;
 }
 
 .hide {
     display: none;
+}
+
+.page-header {
+    margin: 20px 0 10px;
+}
+
+.vbottom {
+    display: inline-block;
+    vertical-align: bottom;
+    float: none;
+}
+
+a:focus, .btn:focus{
+    outline: 0 !important;
 }
 
 /*********** ARRETS ***********/
@@ -35,6 +49,7 @@ footer {
         img {
             display: inline-block;
             margin-right: 10px;
+            margin-bottom: 5px;
         }
     }
 }
@@ -60,12 +75,48 @@ footer {
             padding: 0;
             max-height: 240px;
             overflow-y: scroll;
+            position: absolute;
+            z-index: 2;
+            background: white;
+            width: 93%;
+
             p {
                 cursor: pointer;
                 height: 60px;
                 line-height: 60px;
                 font-size: 25px;
                 border-bottom: 1px solid #ccc;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+                overflow: hidden;
+            }
+        }
+    }
+}
+
+/** MOBILE : screen-xs = 480px */
+@media (max-width: 480px) {
+    .arrets {
+        .panel {
+            .panel-heading {
+                h1 {
+                    margin-top: 5px;
+                    font-size: 25px;
+
+                    &.time {
+                        font-size: 30px;
+                    }
+                }
+            }
+        }
+    }
+    .lignes {
+        .panel {
+            .panel-body {
+                width: 88%;
+                p {
+                    font-size: 20px;
+                }
             }
         }
     }

@@ -3,12 +3,17 @@
 
     <!-- Page Heading -->
     <div class="row">
-        <div class="col-lg-12">
-            <h1 class="page-header"><i class="glyphicon glyphicon-road"></i> Last Bus Tan
-                <small>{{ pageHeader }}</small>
+        <div class="col-md-12 page-header">
+            <div class="col-md-6 col-xs-12 vbottom">
+                <h1>
+                    <i class="glyphicon glyphicon-road"></i> Last Bus Tan
+                    <small>{{ pageHeader }}</small>
+                </h1>
+            </div><!--
+            --><div class="col-md-6 col-xs-12 vbottom">
                 <!-- BACK BUTTON -->
-                <button class="btn btn-raised btn-primary pull-right" ng-click="backToArrets()" ng-show="currentArret"><i class="glyphicon glyphicon-chevron-left"></i> Revenir à la liste des arrêts</button>
-            </h1>
+                <button class="btn btn-raised btn-block btn-primary" ng-click="backToArrets()" ng-show="currentArret"><i class="glyphicon glyphicon-chevron-left"></i> Revenir à la liste des arrêts</button>
+            </div>
         </div>
     </div>
 
@@ -24,17 +29,17 @@
     <!-- TIMES LIST FOR SELECTED ARRET -->
     <div class="arrets" ng-repeat="data in arretData | orderBy:hourIncreasing" ng-show="currentArret">
         <!-- Project One -->
-        <div class="row panel panel-primary not-clickable">
+        <div class="panel panel-primary not-clickable">
             <div class="panel-heading">
                 <div class="row">
-                    <div class="col-md-2">
+                    <div class="col-md-2 col-xs-3">
                         <img class="img-responsive" src="img/{{ data.ligne }}.gif" alt="Ligne {{ data.ligne }}">
                     </div>
-                    <div class="col-md-7">
+                    <div class="col-md-7 col-xs-6">
                         <h1>{{ currentArret }}</h1>
                         <h1>&rarr; {{ data.terminus }}</h1>
                     </div>
-                    <div class="col-md-3 text-right">
+                    <div class="col-md-3 col-xs-3 text-right">
                         <h1 class="time">{{ data.heure }}</h1>
                     </div>
                 </div>
@@ -46,11 +51,11 @@
     <!-- ARRETS LIST -->
     <div infinite-scroll="showMoreArrets()" infinite-scroll-distance="1">
         <div class="arrets" ng-repeat="arret in arrets" ng-show="!currentArret">
-            <div class="row panel panel-primary" ng-click="showArret(arret)">
+            <div class="panel panel-primary" ng-click="showArret(arret)">
                 <div class="panel-heading">
                     <div class="row">
-                        <div class="col-md-6"><h1>{{ arret.libelle }}</h1></div>
-                        <div class="col-md-6"><h1 class="text-right">{{ arret.distance }}</h1></div>
+                        <div class="col-md-6 col-xs-6"><h1>{{ arret.libelle }}</h1></div>
+                        <div class="col-md-6 col-xs-6"><h1 class="text-right">{{ arret.distance }}</h1></div>
                     </div>
                 </div>
                 <div class="panel-body">
