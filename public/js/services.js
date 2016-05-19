@@ -1,3 +1,4 @@
+/** General helpers for controllers */
 lastBusTanControllers.service('Helpers', function($http) {
 
     /* Action when pushed on the back button */
@@ -73,6 +74,24 @@ lastBusTanControllers.service('Helpers', function($http) {
                 this.lastArret += this.loadingStep;
             }
         }
+    }
+
+    /* Get the int value of a "ligne", in order to sort the list */
+    this.getLigneValue = function(ligne) {
+        // if it's C* or LU or another...
+        if (isNaN(parseInt(ligne))) {
+            if (isNaN(parseInt(ligne[1]))) {
+                // 1000 + sum of charCode ==> always at the end of the list
+                returnValue = 1000 + ligne.charCodeAt(0) + ligne.charCodeAt(1);
+            } else {
+                // 100 + (C or E)*10 + ligne number ==> always after normal numbers and
+                // *10 is for preventing E1 coming after C2.
+                returnValue = 100 + ligne.charCodeAt(0)*10 + parseInt(ligne[1]);
+            }
+        } else { // else if it's ligne number
+            returnValue = parseInt(ligne);
+        }
+        return returnValue;
     }
 
 });

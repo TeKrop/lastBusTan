@@ -39,8 +39,8 @@
                         <h1>{{ currentArret }}</h1>
                         <h1>&rarr; {{ data.terminus }}</h1>
                     </div>
-                    <div class="col-md-3 col-xs-3 text-right">
-                        <h1 class="time">{{ data.heure }}</h1>
+                    <div class="col-md-3 col-xs-3">
+                        <h1 class="time pull-right">{{ data.heure }}</h1>
                     </div>
                 </div>
             </div>
@@ -50,7 +50,7 @@
 
     <!-- LIGNES -->
     <div class="row" infinite-scroll="showMoreData('lignes')" infinite-scroll-distance="1" ng-show="!currentArret">
-        <div class="col-md-4 col-xs-6 lignes" ng-repeat="ligne in lignes | orderBy:ligneOrder">
+        <div class="col-md-4 col-xs-6 lignes" ng-repeat="ligne in lignes">
             <div class="panel panel-primary">
                 <div class="panel-heading" ng-click="toggleArrets(ligne)">
                     <div class="row">

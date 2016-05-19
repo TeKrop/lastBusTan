@@ -87,7 +87,9 @@ lastBusTanControllers.controller('LignesController', function($scope, $http, Hel
             // we take the data, and order it here, in order to avoid issues
             // with orderBy + infinite scroll on HTML
             $scope.dataLoaded = data.sort(function(a, b) {
-                return a.numLigne - b.numLigne;
+                var aValue = Helpers.getLigneValue(a.numLigne);
+                var bValue = Helpers.getLigneValue(b.numLigne);
+                return aValue - bValue;
             });
             for (var i=0; i < $scope.loadingStep; i++) {
                 $scope.lignes.push($scope.dataLoaded[i]);
