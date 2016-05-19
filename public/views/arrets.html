@@ -12,7 +12,7 @@
             </div><!--
             --><div class="col-md-6 col-xs-12 vbottom">
                 <!-- BACK BUTTON -->
-                <button class="btn btn-raised btn-block btn-primary" ng-click="backToArrets()" ng-show="currentArret"><i class="glyphicon glyphicon-chevron-left"></i> Revenir à la liste des arrêts</button>
+                <button class="btn btn-raised btn-block btn-primary" ng-click="backToList('arrets')" ng-show="currentArret"><i class="glyphicon glyphicon-chevron-left"></i> Revenir à la liste des arrêts</button>
             </div>
         </div>
     </div>
@@ -49,8 +49,8 @@
     </div>
 
     <!-- ARRETS LIST -->
-    <div infinite-scroll="showMoreArrets()" infinite-scroll-distance="1">
-        <div class="arrets" ng-repeat="arret in arrets" ng-show="!currentArret">
+    <div infinite-scroll="showMoreData('arrets')" infinite-scroll-distance="1" ng-show="!currentArret">
+        <div class="arrets" ng-repeat="arret in arrets">
             <div class="panel panel-primary" ng-click="showArret(arret)">
                 <div class="panel-heading">
                     <div class="row">

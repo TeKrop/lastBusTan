@@ -1,4 +1,5 @@
 var app = angular.module('lastBusTan', ['ngRoute', 'infinite-scroll', 'lastBusTanControllers']);
+var lastBusTanControllers = angular.module('lastBusTanControllers', []);
 
 // application configuration
 app.config(['$routeProvider', function ($routeProvider) {
@@ -8,15 +9,15 @@ app.config(['$routeProvider', function ($routeProvider) {
     $routeProvider
     .when('/', {
         templateUrl: 'views/arrets.html',
-        controller: 'ArretsProchesCtrl'
+        controller: 'ArretsProchesController'
     })
     .when('/lignes', {
         templateUrl: 'views/lignes.html',
-        controller: 'LignesCtrl'
+        controller: 'LignesController'
     })
     .when('/arrets', {
         templateUrl: 'views/arrets.html',
-        controller: 'ArretsCtrl'
+        controller: 'ArretsController'
     })
     .otherwise({
         redirectTo: '/'

@@ -1,10 +1,8 @@
-var lastBusTanControllers = angular.module('lastBusTanControllers', []);
-
-lastBusTanControllers.controller('ArretsProchesCtrl', function($scope, $http) {
+lastBusTanControllers.controller('ArretsProchesController', function($scope, $http, Helpers) {
     // global variables
     $scope.loading = true;
     $scope.currentArret = false;
-    $scope.pageHeader = 'Arrêts proches';
+    $scope.pageHeader = 'Liste des arrêts';
     $scope.errorDisplay = false;
     $scope.arretData = [];
 
@@ -40,59 +38,35 @@ lastBusTanControllers.controller('ArretsProchesCtrl', function($scope, $http) {
     });
 
     // when we click on a "arret", display data about it
-    $scope.showArret =  function(arret) {
+    $scope.showArret = function(arret) {
+        var that = $scope;
         $scope.loading = true;
         $scope.errorMessage = false;
         $scope.currentArret = arret.libelle;
         $scope.pageHeader = 'Arrêt ' + arret.libelle;
         $http.get('/api/arret/' + arret.codeLieu)
             .success(function(data) {
-                $scope.arretData = data;
-                $scope.loading = false;
+                that.arretData = data;
+                that.loading = false;
                 if (data.length === 0) {
-                    $scope.errorMessage = 'Erreur : aucune donnée pour l\'arrêt ' + arret.libelle;
+                    that.errorMessage = 'Erreur : aucune donnée pour l\'arrêt ' + arret.libelle;
                 }
             })
             .error(function(data) {
                 console.log('Error: ' + data);
-                $scope.loading = false;
-                $scope.errorMessage = 'Erreur pendant le chargement des données';
+                that.loading = false;
+                that.errorMessage = 'Erreur pendant le chargement des données';
             });
     };
 
     // when we click on the back button, return on the list
-    $scope.backToArrets = function() {
-        $scope.currentArret = false;
-        $scope.loading = false;
-        $scope.errorMessage = false;
-        $scope.arretData = [];
-        $scope.pageHeader = 'Arrêts proches';
-    };
+    $scope.backToList = Helpers.backToList;
 
     // order by for arret list of hours
-    $scope.hourIncreasing = function(arret) {
-        var arretArray = arret.heure.split('h');
-
-        var hours = parseInt(arretArray[0]);
-        var minutes = arretArray[1];
-        // if the last char is not a number (it can happen sometimes), we substract it
-        if (isNaN(parseInt(minutes[minutes.length-1]))) {
-            minutes = minutes.substr(0, minutes.length-1);
-        }
-
-        // we only have hours between 6am and 2am, so we use it
-        if (hours < 4) { hours += 24; }
-
-        // we return the total minutes for comparison
-        return hours*60 + minutes;
-    };
+    $scope.hourIncreasing = Helpers.hourIncreasing;
 });
 
-lastBusTanControllers.controller('LignesCtrl', function($scope, $http) {
-    // global internal variables
-    var lignesLoaded = null;
-    var lastLigne = null;
-    var loadingStep = 10;
+lastBusTanControllers.controller('LignesController', function($scope, $http, Helpers) {
 
     // global variables
     $scope.loading = true;
@@ -102,18 +76,23 @@ lastBusTanControllers.controller('LignesCtrl', function($scope, $http) {
     $scope.arretData = [];
     $scope.lignes = [];
 
+    // variables for lazy loading
+    $scope.dataLoaded = null;
+    $scope.lastLigne = null;
+    $scope.loadingStep = 10;
+
     // when landing on the page, get all todos and show them
     $http.get('/api/lignes')
         .success(function(data) {
             // we take the data, and order it here, in order to avoid issues
             // with orderBy + infinite scroll on HTML
-            lignesLoaded = data.sort(function(a, b) {
+            $scope.dataLoaded = data.sort(function(a, b) {
                 return a.numLigne - b.numLigne;
             });
-            for (var i=0; i < loadingStep; i++) {
-                $scope.lignes.push(lignesLoaded[i]);
+            for (var i=0; i < $scope.loadingStep; i++) {
+                $scope.lignes.push($scope.dataLoaded[i]);
             }
-            lastLigne = loadingStep;
+            $scope.lastLigne = $scope.loadingStep;
             $scope.loading = false;
         })
         .error(function(data) {
@@ -122,17 +101,16 @@ lastBusTanControllers.controller('LignesCtrl', function($scope, $http) {
             $scope.loading = false;
         });
 
+    // when we click on panel-heading containing "ligne" number
     $scope.toggleArrets = function(ligne) {
         ligne.showArrets = !ligne.showArrets;
     };
 
     // when we click on a "arret", display data about it (with specific line)
-    $scope.showArret =  function(ligne, arret) {
+    $scope.showArret = function(ligne, arret) {
         $scope.loading = true;
         $scope.errorMessage = false;
-
         ligne.showArrets = false;
-
         $scope.currentArret = arret.libelle;
         $scope.pageHeader = 'Ligne ' + ligne.numLigne + ' - Arrêt ' + arret.libelle;
         $http.get('/api/arret/' + arret.codeLieu)
@@ -155,58 +133,16 @@ lastBusTanControllers.controller('LignesCtrl', function($scope, $http) {
     };
 
     // use for lazy loading : we load lignes step by step (loadingStep)
-    $scope.showMoreLignes = function() {
-        // if we loaded the data
-        if (lastLigne !== null) {
-            // we show 10 more lignes (or less if we are at the end)
-            for (var i = lastLigne; i < lastLigne + loadingStep && i < lignesLoaded.length; i++) {
-                $scope.lignes.push(lignesLoaded[i]);
-            }
-            lastLigne += loadingStep;
-        }
-    };
+    $scope.showMoreData = Helpers.showMoreData;
 
     // when we click on the back button, return on the list
-    $scope.backToLignes = function() {
-        $scope.currentArret = false;
-        $scope.loading = false;
-        $scope.errorMessage = false;
-        $scope.arretData = [];
-        $scope.pageHeader = 'Liste des lignes';
-    };
-
-    // order by for lignes
-    $scope.ligneOrder = function(ligne) {
-        if (ligne !== undefined) {
-            return isNaN(parseInt(ligne.numLigne)) ? ligne.numLigne : parseInt(ligne.numLigne);
-        }
-    };
+    $scope.backToList = Helpers.backToList;
 
     // order by for arret list of hours
-    $scope.hourIncreasing = function(arret) {
-        var arretArray = arret.heure.split('h');
-
-        var hours = parseInt(arretArray[0]);
-        var minutes = arretArray[1];
-        // if the last char is not a number (it can happen sometimes), we substract it
-        if (isNaN(parseInt(minutes[minutes.length-1]))) {
-            minutes = minutes.substr(0, minutes.length-1);
-        }
-
-        // we only have hours between 6am and 2am, so we use it
-        if (hours < 4) { hours += 24; }
-
-        // we return the total minutes for comparison
-        return hours*60 + minutes;
-    };
+    $scope.hourIncreasing = Helpers.hourIncreasing;
 });
 
-lastBusTanControllers.controller('ArretsCtrl', function($scope, $http) {
-    // global internal variables
-    var arretsLoaded = null;
-    var lastArret = null;
-    var loadingStep = 10;
-
+lastBusTanControllers.controller('ArretsController', function($scope, $http, Helpers) {
     // global scope variables
     $scope.loading = true;
     $scope.currentArret = false;
@@ -215,14 +151,19 @@ lastBusTanControllers.controller('ArretsCtrl', function($scope, $http) {
     $scope.arretData = [];
     $scope.arrets = [];
 
+    // variables for lazy loading
+    $scope.dataLoaded = null;
+    $scope.lastArret = null;
+    $scope.loadingStep = 10;
+
     // get the arrets with api
     $http.get('/api/arrets')
         .success(function(data) {
-            arretsLoaded = data;
-            for (var i=0; i < loadingStep; i++) {
-                $scope.arrets.push(arretsLoaded[i]);
+            $scope.dataLoaded = data;
+            for (var i=0; i < $scope.loadingStep; i++) {
+                $scope.arrets.push($scope.dataLoaded[i]);
             }
-            lastArret = loadingStep;
+            $scope.lastArret = $scope.loadingStep;
             $scope.loading = false;
         })
         .error(function(data) {
@@ -232,62 +173,33 @@ lastBusTanControllers.controller('ArretsCtrl', function($scope, $http) {
         });
 
     // when we click on a "arret", display data about it
-    $scope.showArret =  function(arret) {
+    $scope.showArret = function(arret) {
+        var that = $scope;
         $scope.loading = true;
         $scope.errorMessage = false;
         $scope.currentArret = arret.libelle;
         $scope.pageHeader = 'Arrêt ' + arret.libelle;
         $http.get('/api/arret/' + arret.codeLieu)
             .success(function(data) {
-                $scope.arretData = data;
-                $scope.loading = false;
+                that.arretData = data;
+                that.loading = false;
                 if (data.length === 0) {
-                    $scope.errorMessage = 'Erreur : aucune donnée pour l\'arrêt ' + arret.libelle;
+                    that.errorMessage = 'Erreur : aucune donnée pour l\'arrêt ' + arret.libelle;
                 }
             })
             .error(function(data) {
                 console.log('Error: ' + data);
-                $scope.errorMessage = 'Erreur pendant le chargement des données';
-                $scope.loading = false;
+                that.loading = false;
+                that.errorMessage = 'Erreur pendant le chargement des données';
             });
     };
 
     // use for lazy loading : we load arrets step by step (loadingStep)
-    $scope.showMoreArrets = function() {
-        // if we loaded the data
-        if (lastArret !== null) {
-            // we show 10 more arrets
-            for (var i = lastArret; i < lastArret + loadingStep && i < arretsLoaded.length; i++) {
-                $scope.arrets.push(arretsLoaded[i]);
-            }
-            lastArret += loadingStep;
-        }
-    };
+    $scope.showMoreData = Helpers.showMoreData;
 
     // when we click on the back button, return on the list
-    $scope.backToArrets = function() {
-        $scope.currentArret = false;
-        $scope.loading = false;
-        $scope.errorMessage = false;
-        $scope.arretData = [];
-        $scope.pageHeader = 'Liste des arrêts';
-    };
+    $scope.backToList = Helpers.backToList;
 
     // order by for arret list of hours
-    $scope.hourIncreasing = function(arret) {
-        var arretArray = arret.heure.split('h');
-
-        var hours = parseInt(arretArray[0]);
-        var minutes = arretArray[1];
-        // if the last char is not a number (it can happen sometimes), we substract it
-        if (isNaN(parseInt(minutes[minutes.length-1]))) {
-            minutes = minutes.substr(0, minutes.length-1);
-        }
-
-        // we only have hours between 6am and 2am, so we use it
-        if (hours < 4) { hours += 24; }
-
-        // we return the total minutes for comparison
-        return hours*60 + minutes;
-    };
+    $scope.hourIncreasing = Helpers.hourIncreasing;
 });
