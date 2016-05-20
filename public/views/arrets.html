@@ -23,7 +23,7 @@
             <div class="form-group form-group-lg is-empty">
                 <div class="input-group">
                     <span class="input-group-addon"><i class="glyphicon glyphicon-search"></i></span>
-                    <input class="form-control" type="text" ng-model="searchInput">
+                    <input class="form-control" type="text" ng-model="searchInput" ng-change="quickSearch()">
                 </div>
                 <span class="material-input"></span>
             </div>
@@ -62,8 +62,8 @@
     </div>
 
     <!-- ARRETS LIST -->
-    <div infinite-scroll="showMoreData('arrets')" infinite-scroll-distance="1" ng-show="!currentArret">
-        <div class="arrets" ng-repeat="arret in arrets | filter:matchesSearchInput">
+    <div infinite-scroll="showMoreData('arrets')" infinite-scroll-distance="1" infinite-scroll-disabled="searchInput" ng-show="!currentArret">
+        <div class="arrets" ng-repeat="arret in arrets">
             <div class="panel panel-primary" ng-click="showArret(arret)">
                 <div class="panel-heading">
                     <div class="row">

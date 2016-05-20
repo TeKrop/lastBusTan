@@ -196,8 +196,28 @@ lastBusTanControllers.controller('ArretsController', function($scope, $http, Hel
             });
     };
 
-    $scope.matchesSearchInput = function (arret) {
-        return ($scope.searchInput !== undefined) ? arret.libelle.toLowerCase().indexOf($scope.searchInput.toLowerCase()) > -1 : true;
+    // quick search with input
+    $scope.quickSearch = function () {
+        // if the input is not empty, search and pick results
+        var keyword = $scope.searchInput;
+        if (keyword !== undefined) {
+            var matches = $scope.dataLoaded.filter(function(arret) {
+                return arret.libelle.toLowerCase().substring(0, keyword.length) == keyword.toLowerCase();
+            });
+            // display only ten first results
+            $scope.arrets = [];
+            for (var i=0; i < $scope.loadingStep && i < matches.length; i++) {
+                $scope.arrets.push(matches[i]);
+            }
+        } else {
+            // reinitialize arrets if data loaded
+            if ($scope.dataLoaded !== null) {
+                $scope.arrets = [];
+                for (var i=0; i < $scope.loadingStep; i++) {
+                    $scope.arrets.push($scope.dataLoaded[i]);
+                }
+            }
+        }
     };
 
     // use for lazy loading : we load arrets step by step (loadingStep)
