@@ -6,8 +6,8 @@ TODOLIST
 
 ## TODO
 ==> METTRE DES TESTS
-==> SERVICES POUR EVITER DOUBLONS DE CODE, voir pour showArret qui bug
 ==> Champ de recherche dans arrêts
+==> Service pour show arrêt
 ==> Transformer les lignes en SELECT sur la liste des lignes (bug actuellement sur mobile)
 
 ## AMELIORATIONS

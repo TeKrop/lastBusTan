@@ -17,6 +17,19 @@
         </div>
     </div>
 
+    <!-- QUICK SEARCH INPUT -->
+    <div class="search-input panel panel-primary" ng-show="!currentArret">
+        <div class="panel-body">
+            <div class="form-group form-group-lg is-empty">
+                <div class="input-group">
+                    <span class="input-group-addon"><i class="glyphicon glyphicon-search"></i></span>
+                    <input class="form-control" type="text" ng-model="searchInput">
+                </div>
+                <span class="material-input"></span>
+            </div>
+        </div>
+    </div>
+
     <!-- LOADER -->
     <div class="cssload-container" ng-show="loading">
         <div class="cssload-zenith"></div>
@@ -50,7 +63,7 @@
 
     <!-- ARRETS LIST -->
     <div infinite-scroll="showMoreData('arrets')" infinite-scroll-distance="1" ng-show="!currentArret">
-        <div class="arrets" ng-repeat="arret in arrets">
+        <div class="arrets" ng-repeat="arret in arrets | filter:matchesSearchInput">
             <div class="panel panel-primary" ng-click="showArret(arret)">
                 <div class="panel-heading">
                     <div class="row">

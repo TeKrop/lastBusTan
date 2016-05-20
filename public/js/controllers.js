@@ -196,6 +196,10 @@ lastBusTanControllers.controller('ArretsController', function($scope, $http, Hel
             });
     };
 
+    $scope.matchesSearchInput = function (arret) {
+        return ($scope.searchInput !== undefined) ? arret.libelle.toLowerCase().indexOf($scope.searchInput.toLowerCase()) > -1 : true;
+    };
+
     // use for lazy loading : we load arrets step by step (loadingStep)
     $scope.showMoreData = Helpers.showMoreData;
 
