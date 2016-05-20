@@ -5,9 +5,7 @@ TODOLIST
 ==> Voir pour bug de chargement parfois (Commerce)
 
 ## TODO
-==> METTRE DES TESTS
 ==> Service pour show arrêt
 ==> Transformer les lignes en SELECT sur la liste des lignes (bug actuellement sur mobile)
 
 ## AMELIORATIONS
-==> Minifier CSS et JS
