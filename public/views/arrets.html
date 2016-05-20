@@ -18,7 +18,7 @@
     </div>
 
     <!-- QUICK SEARCH INPUT -->
-    <div class="search-input panel panel-primary" ng-show="!currentArret">
+    <div class="search-input panel panel-primary" ng-show="!currentArret && dataLoaded">
         <div class="panel-body">
             <div class="form-group form-group-lg is-empty">
                 <div class="input-group">
@@ -63,8 +63,8 @@
 
     <!-- ARRETS LIST -->
     <div infinite-scroll="showMoreData('arrets')" infinite-scroll-distance="1" infinite-scroll-disabled="searchInput" ng-show="!currentArret">
-        <div class="arrets" ng-repeat="arret in arrets">
-            <div class="panel panel-primary" ng-click="showArret(arret)">
+        <div class="arrets" ng-repeat="arret in arrets" ng-click="showArret(arret)">
+            <div class="panel panel-primary">
                 <div class="panel-heading">
                     <div class="row">
                         <div class="col-md-6 col-xs-6"><h1>{{ arret.libelle }}</h1></div>

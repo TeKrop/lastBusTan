@@ -33,27 +33,51 @@ lastBusTanControllers.service('Helpers', function($http) {
     }
 
     /* Trigerred to show a specific stop */
-    /*this.showArret = function(arret) {
-        var that = this;
-        this.loading = true;
-        this.errorMessage = false;
-        this.currentArret = arret.libelle;
-        this.pageHeader = 'Arrêt ' + arret.libelle;
-        $http.get('/api/arret/' + arret.codeLieu)
-            .success(function(data) {
-                that.arretData = data;
-                that.loading = false;
-                if (data.length === 0) {
-                    that.errorMessage = 'Erreur : aucune donnée pour l\'arrêt ' + arret.libelle;
-                }
-            })
-            .error(function(data) {
-                console.log('Error: ' + data);
-                that.loading = false;
-                that.errorMessage = 'Erreur pendant le chargement des données';
-            });
-    }
-*/
+    // this.showArret = function(arret) {
+    //     var that = this;
+    //     this.loading = true;
+    //     this.errorMessage = false;
+    //     this.currentArret = arret.libelle;
+    //     this.pageHeader = 'Arrêt ' + arret.libelle;
+    //     $http.get('/api/arret/' + arret.codeLieu)
+    //         .success(function(data) {
+    //             that.arretData = data;
+    //             that.loading = false;
+    //             if (data.length === 0) {
+    //                 that.errorMessage = 'Erreur : aucune donnée pour l\'arrêt ' + arret.libelle;
+    //             }
+    //         })
+    //         .error(function(data) {
+    //             console.log('Error: ' + data);
+    //             that.loading = false;
+    //             that.errorMessage = 'Erreur pendant le chargement des données';
+    //         });
+    // }
+
+    // this.showArret = function(codeLieu) {
+    //     console.log(codeLieu);
+    //     var that = this;
+    //     this.loading = true;
+    //     this.errorMessage = false;
+    //     this.currentArret = codeLieu;
+    //     this.pageHeader = 'Arrêt ' + codeLieu;
+    //     $http.get('/api/arret/' + codeLieu)
+    //         .success(function(data) {
+    //             console.log(data);
+    //             that.arretData = data;
+    //             that.loading = false;
+    //             if (data.length === 0) {
+    //                 that.errorMessage = 'Erreur : aucune donnée pour l\'arrêt ' + codeLieu;
+    //             }
+    //         })
+    //         .error(function(data) {
+    //             console.log('Error: ' + data);
+    //             that.loading = false;
+    //             that.errorMessage = 'Erreur pendant le chargement des données';
+    //         });
+    // };
+
+
     /* Triggered when click on a "ligne" or "arret" */
     this.showMoreData = function(type) {
         if (type == 'lignes') {
@@ -94,4 +118,27 @@ lastBusTanControllers.service('Helpers', function($http) {
         return returnValue;
     }
 
+    /* Quick search for arrets list */
+    this.quickSearch = function () {
+        // if the input is not empty, search and pick results
+        var keyword = this.searchInput;
+        if (keyword !== undefined) {
+            var matches = this.dataLoaded.filter(function(arret) {
+                return arret.libelle.toLowerCase().substring(0, keyword.length) == keyword.toLowerCase();
+            });
+            // display only ten first results
+            this.arrets = [];
+            for (var i=0; i < this.loadingStep && i < matches.length; i++) {
+                this.arrets.push(matches[i]);
+            }
+        } else {
+            // reinitialize arrets if data loaded
+            if (this.dataLoaded !== null) {
+                this.arrets = [];
+                for (var i=0; i < this.loadingStep; i++) {
+                    this.arrets.push(thise.dataLoaded[i]);
+                }
+            }
+        }
+    };
 });

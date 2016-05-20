@@ -6,10 +6,8 @@ TODOLIST
 
 ## TODO
 ==> METTRE DES TESTS
-==> Champ de recherche dans arrêts
 ==> Service pour show arrêt
 ==> Transformer les lignes en SELECT sur la liste des lignes (bug actuellement sur mobile)
 
 ## AMELIORATIONS
-==> Une vue pour la vue d'un arrêt, voir comment se démerder
-==> Recherche d'arrêt sur la page des arrêts
+==> Minifier CSS et JS

@@ -9,6 +9,7 @@ var exec = require('child_process').exec;        // allow us to execute command 
 var watch = require('node-watch');               // watch files or directories for changes
 var _ = require('underscore');                   // some useful functions for manipulating data
 var Q = require("q");                            // use promises to chain functions (especially http get)
+var compressor = require('node-minify');         // tool for minifying CSS and JS
 
 /*************** CONFIG ***************/
 app.use(express.static(__dirname + '/public'));                                     // set the static files location
@@ -27,11 +28,11 @@ var dataHostURL = "open_preprod.tan.fr"; // development server
 /*************** WATCH ***************/
 
 // watch main.less for changes, and compile when the file changes
-watch('public/less/main.less', function(filename) {
+watch('public/less/style.less', function(filename) {
     console.log('[node-watch]', filename, 'changed. Compiling...');
     // we render the main.less file into main.css (minified)
-    exec("lessc -x public/less/main.less public/css/style.css", function(error, stdout, stderr) {
-        console.log('[node-watch] style.css file compiled.');
+    exec("lessc -x public/less/style.less public/css/style.css", function(error, stdout, stderr) {
+        console.log('[node-watch] style.css file compiled. Running compression...');
         if (stdout !== '') {
             console.log('[node-watch] stdout: ' + stdout);
         }
@@ -40,6 +41,45 @@ watch('public/less/main.less', function(filename) {
         }
         if (error !== null) {
             console.log('[node-watch] exec error: ' + error);
+        }
+        // and we compress using yui compressor
+        new compressor.minify({
+            type: 'yui-css',
+            fileIn: 'public/css/style.css',
+            fileOut: 'public/css/style.min.css',
+            callback: function(err, min){
+                console.log('[node-watch] style.css minification done !');
+                if (err !== null) {
+                    console.log(err);
+                }
+            }
+        });
+    });
+});
+
+// watch js relative to angular changes, and compile js
+watch('public/js', function(filename) {
+    console.log('[node-watch]', filename, 'changed. Compiling js files...');
+    new compressor.minify({
+        type: 'uglifyjs',
+        fileIn: [
+            'bower_components/jquery/dist/jquery.js',
+            'bower_components/bootstrap/dist/js/bootstrap.js',
+            'bower_components/bootstrap-material-design/dist/js/material.js',
+            'bower_components/angular/angular.js',
+            'bower_components/angular-route/angular-route.js',
+            'bower_components/ngInfiniteScroll/build/ng-infinite-scroll.js',
+            'public/js/app.js',
+            'public/js/directives.js',
+            'public/js/services.js',
+            'public/js/controllers.js'
+        ],
+        fileOut: 'public/js/script.js',
+        callback: function(err, min){
+            console.log('[node-watch] script.js compilation done !');
+            if (err !== null) {
+                console.log(err);
+            }
         }
     });
 });
