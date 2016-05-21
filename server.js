@@ -1,6 +1,7 @@
 /*************** SET UP ***************/
 var express  = require('express');
 var compression = require('compression');        // gzip or deflate compression for page loading
+var helmet = require('helmet');                  // security for production
 var app = express();                             // create our app w/ express
 var morgan = require('morgan');                  // log requests to the console (express4)
 var bodyParser = require('body-parser');         // pull information from HTML POST (express4)
@@ -14,6 +15,7 @@ var compressor = require('node-minify');         // tool for minifying CSS and J
 
 /*************** CONFIG ***************/
 app.use(compression());                                                             // compress all requests
+app.use(helmet());                                                                  // security for well-known web vulnerabilities
 app.use(express.static(__dirname + '/public'));                                     // set the static files location
 app.use('/bower_components', express.static(__dirname + '/bower_components'));      // set the bower static files location
 app.use(morgan('dev'));                                                             // log every request to the console
@@ -24,8 +26,8 @@ app.use(methodOverride());
 
 /*************** MODEL ***************/
 
-var dataHostURL = "open_preprod.tan.fr"; // development server
-//var dataHostURL = "open.tan.fr"; // production server
+//var dataHostURL = "open_preprod.tan.fr"; // development server
+var dataHostURL = "open.tan.fr"; // production server
 
 /*************** WATCH ***************/
 
@@ -89,8 +91,8 @@ watch('public/js/app', function(filename) {
 
 /*************** LISTEN ***************/
 
-app.listen(8080);
-console.log("Listening on port 8080");
+app.listen(80);
+console.log("Listening on port 80");
 
 /*************** ROUTES ***************/
 
