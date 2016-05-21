@@ -10,6 +10,7 @@
   "license": "GPLv3",
   "dependencies": {
     "body-parser": "^1.15.0",
+    "compression": "^1.6.2",
     "express": "^4.13.4",
     "method-override": "^2.3.5",
     "morgan": "^1.7.0",

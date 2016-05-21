@@ -1,5 +1,6 @@
 /*************** SET UP ***************/
 var express  = require('express');
+var compression = require('compression');        // gzip or deflate compression for page loading
 var app = express();                             // create our app w/ express
 var morgan = require('morgan');                  // log requests to the console (express4)
 var bodyParser = require('body-parser');         // pull information from HTML POST (express4)
@@ -12,6 +13,7 @@ var Q = require("q");                            // use promises to chain functi
 var compressor = require('node-minify');         // tool for minifying CSS and JS
 
 /*************** CONFIG ***************/
+app.use(compression());                                                             // compress all requests
 app.use(express.static(__dirname + '/public'));                                     // set the static files location
 app.use('/bower_components', express.static(__dirname + '/bower_components'));      // set the bower static files location
 app.use(morgan('dev'));                                                             // log every request to the console
