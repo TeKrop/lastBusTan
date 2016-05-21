@@ -124,7 +124,7 @@ lastBusTanControllers.controller('LignesController', function($scope, $http, Hel
         ligne.showArrets = false;
         $scope.currentArret = arret.libelle;
         $scope.pageHeader = 'Ligne ' + ligne.numLigne + ' - Arrêt ' + arret.libelle;
-        $http.get('/api/arret/' + arret.codeLieu)
+        $http.get('/api/arret/' + arret.codeLieu + '/' + ligne.numLigne)
             .success(function(data) {
                 // we filter the received data, only selecting hours for the selected "ligne"
                 data = data.filter(function(d) {

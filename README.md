@@ -6,5 +6,6 @@ less : npm install -g less
 
 ## Install and run
 npm install
+npm install -g bower
 bower install
 node server.js

@@ -1,5 +1,6 @@
 TODOLIST
 
 ## TODO
-==> Service pour show arrêt
-==> Côté serveur, nouvelle route pour arret SUR ligne
+==> Service pour show arrêt ?
+
+==> Bug côté client mobile quand beaucoup de lignes, dropdown lag

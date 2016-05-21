@@ -210,7 +210,7 @@ app.get('/api/lignes', function(req, res) {
 });
 
 // get arret details
-app.get('/api/arret/:id', function(req, res) {
+app.get('/api/arret/:id/:numLigne?', function(req, res) {
     var options = {
         host: dataHostURL,
         path: '/ewp/tempsattente.json/' + req.params.id
@@ -231,11 +231,15 @@ app.get('/api/arret/:id', function(req, res) {
 
             // we get the 'codeArret', 'ligne' and 'sens' for the arret
             arretsData.forEach(function(elt) {
-                codesArrets.push({
-                    'codeArret': elt.arret.codeArret,
-                    'ligne': elt.ligne.numLigne,
-                    'sens': elt.sens
-                });
+                // if we don't have any optional parameter, or if we have and the line is correpsnding
+                if ((!req.params.numLigne) || (req.params.numLigne && req.params.numLigne == elt.ligne.numLigne)) {
+                    codesArrets.push({
+                        'codeArret': elt.arret.codeArret,
+                        'ligne': elt.ligne.numLigne,
+                        'sens': elt.sens
+                    });
+                }
+
             });
             // as we have several records for each "arret", we just want one
             codesArrets = _.uniq(codesArrets, 'codeArret');
