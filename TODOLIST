@@ -1,11 +1,9 @@
 TODOLIST
 
 ## BUGS
-==> Style mobile à corriger
 ==> Voir pour bug de chargement parfois (Commerce)
 
 ## TODO
 ==> Service pour show arrêt
-==> Transformer les lignes en SELECT sur la liste des lignes (bug actuellement sur mobile)
 
 ## AMELIORATIONS

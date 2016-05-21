@@ -22,7 +22,7 @@ footer {
 }
 
 .page-header {
-    margin: 20px 0 10px;
+    margin: 10px 0;
 }
 
 .vbottom {
@@ -41,13 +41,32 @@ a:focus, .btn:focus{
     overflow: hidden;
 }
 
+.no-padding {
+    padding: 0;
+}
+
+.no-margin {
+    margin: 0;
+}
+
+/*********** HEURES D'ARRET *********/
+
+
 .form-group {
     margin: 0 !important;
+
+    &.form-group-lg {
+        padding-bottom: 0;
+    }
 
     .input-group {
 
         .input-group-addon, .form-control {
-           font-size: 35px !important;
+            font-size: 35px !important;
+        }
+
+        .input-group-addon {
+            padding-left: 3px;
         }
 
         .form-control {
@@ -56,6 +75,9 @@ a:focus, .btn:focus{
         }
     }
 }
+
+
+
 
 /*********** ARRETS ***********/
 .arrets {
@@ -89,6 +111,7 @@ a:focus, .btn:focus{
                 margin-top: 10px;
                 font-weight: bold;
                 &.chevron {
+                    margin-top: 18px;
                     font-size: 60px;
                 }
             }
@@ -124,7 +147,7 @@ a:focus, .btn:focus{
             .panel-heading {
                 h1 {
                     margin-top: 5px;
-                    font-size: 25px;
+                    font-size: 20px;
 
                     &.time {
                         font-size: 30px;
@@ -135,8 +158,21 @@ a:focus, .btn:focus{
     }
     .lignes {
         .panel {
+            .panel-heading {
+                h1 {
+                    &.chevron {
+                        margin-top: 11px;
+                    }
+                }
+                .row {
+                    height: 80px;
+                    .img-ligne {
+                        width: 80px;
+                    }
+                }
+            }
+
             .panel-body {
-                width: 88%;
                 p {
                     font-size: 20px;
                 }

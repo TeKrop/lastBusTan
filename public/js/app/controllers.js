@@ -1,3 +1,12 @@
+// global variables
+// different error messages
+var errorMessages = {
+    geolocalisationError : 'Impossible de charger les arrêts à proximité : vous devez autoriser votre navigateur à utiliser votre géolocalisation.',
+    noArretNextToPositionError : 'Aucun arrêt à moins de 500m de votre position.',
+    loadingDataError : 'Erreur pendant le chargement des données',
+    noDataForArretError : 'Erreur : aucune donnée pour cet arrêt ou plus de passage à cette heure aujourd\'hui'
+};
+
 lastBusTanControllers.controller('ArretsProchesController', function($scope, $http, Helpers) {
     // global variables
     $scope.loading = true;
@@ -19,13 +28,13 @@ lastBusTanControllers.controller('ArretsProchesController', function($scope, $ht
                 $scope.arrets = data;
                 $scope.loading = false;
                 if (data.length === 0) {
-                    $scope.errorMessage = 'Aucun arrêt à moins de 500m de votre position.';
+                    $scope.errorMessage = errorMessages.noArretNextToPositionError;
                 }
             })
             .error(function(data) {
                 console.log('Error: ' + data);
                 $scope.loading = false;
-                $scope.errorMessage = 'Erreur pendant le chargement des données';
+                $scope.errorMessage = errorMessages.loadingDataError;
             });
     },
     function (error) {
@@ -33,7 +42,7 @@ lastBusTanControllers.controller('ArretsProchesController', function($scope, $ht
             console.log("permission denied");
             $scope.arrets = [];
             $scope.loading = false;
-            $scope.errorMessage = 'Impossible de charger les arrêts à proximité : vous devez autoriser votre navigateur à utiliser votre géolocalisation.';
+            $scope.errorMessage = errorMessages.geolocalisationError;
         }
     });
 
@@ -49,13 +58,13 @@ lastBusTanControllers.controller('ArretsProchesController', function($scope, $ht
                 that.arretData = data;
                 that.loading = false;
                 if (data.length === 0) {
-                    that.errorMessage = 'Erreur : aucune donnée pour l\'arrêt ' + arret.libelle;
+                    that.errorMessage = errorMessages.noDataForArretError;
                 }
             })
             .error(function(data) {
                 console.log('Error: ' + data);
                 that.loading = false;
-                that.errorMessage = 'Erreur pendant le chargement des données';
+                that.errorMessage = errorMessages.loadingDataError;
             });
     };
 
@@ -99,7 +108,7 @@ lastBusTanControllers.controller('LignesController', function($scope, $http, Hel
         })
         .error(function(data) {
             console.log('Error: ' + data);
-            $scope.errorMessage = 'Erreur pendant le chargement des données';
+            $scope.errorMessage = errorMessages.loadingDataError;
             $scope.loading = false;
         });
 
@@ -124,12 +133,12 @@ lastBusTanControllers.controller('LignesController', function($scope, $http, Hel
                 $scope.arretData = data;
                 $scope.loading = false;
                 if (data.length === 0) {
-                    $scope.errorMessage = 'Erreur : aucune donnée pour l\'arrêt ' + arret.libelle + ' sur la ligne ' + ligne.numLigne;
+                    $scope.errorMessage = errorMessages.noDataForArretError;
                 }
             })
             .error(function(data) {
                 console.log('Error: ' + data);
-                $scope.errorMessage = 'Erreur pendant le chargement des données';
+                $scope.errorMessage = errorMessages.loadingDataError;
                 $scope.loading = false;
             });
     };
@@ -170,7 +179,7 @@ lastBusTanControllers.controller('ArretsController', function($scope, $http, Hel
         })
         .error(function(data) {
             console.log('Error: ' + data);
-            $scope.errorMessage = 'Erreur pendant le chargement des données';
+            $scope.errorMessage = errorMessages.loadingDataError;
             $scope.loading = false;
         });
 
@@ -186,13 +195,13 @@ lastBusTanControllers.controller('ArretsController', function($scope, $http, Hel
                 that.arretData = data;
                 that.loading = false;
                 if (data.length === 0) {
-                    that.errorMessage = 'Erreur : aucune donnée pour l\'arrêt ' + arret.libelle;
+                    that.errorMessage = errorMessages.noDataForArretError;
                 }
             })
             .error(function(data) {
                 console.log('Error: ' + data);
                 that.loading = false;
-                that.errorMessage = 'Erreur pendant le chargement des données';
+                that.errorMessage = errorMessages.loadingDataError;
             });
     };
 

@@ -3,14 +3,14 @@
 
     <!-- Page Heading -->
     <div class="row">
-        <div class="col-md-12 page-header">
+        <div class="col-md-12 page-header no-margin">
             <div class="col-md-6 col-xs-12 vbottom">
                 <h1>
                     <i class="glyphicon glyphicon-road"></i> Last Bus Tan
                     <small class="text-overflow">{{ pageHeader }}</small>
                 </h1>
             </div><!--
-            --><div class="col-md-6 col-xs-12 vbottom">
+            --><div class="col-md-6 col-xs-12 vbottom no-padding">
                 <!-- BACK BUTTON -->
                 <button class="btn btn-raised btn-block btn-primary" ng-click="backToList('lignes')" ng-show="currentArret"><i class="glyphicon glyphicon-chevron-left"></i> Revenir à la liste des lignes</button>
             </div>
@@ -50,12 +50,12 @@
 
     <!-- LIGNES -->
     <div class="row" infinite-scroll="showMoreData('lignes')" infinite-scroll-distance="1" ng-show="!currentArret">
-        <div class="col-md-4 col-xs-6 lignes" ng-repeat="ligne in lignes">
+        <div class="col-md-4 col-xs-12 lignes" ng-repeat="ligne in lignes">
             <div class="panel panel-primary">
                 <div class="panel-heading" ng-click="toggleArrets(ligne)">
                     <div class="row">
                         <div class="col-md-6 col-xs-6">
-                            <img class="img-responsive" src="img/{{ ligne.numLigne }}.gif" alt="Ligne {{ ligne.numLigne }}">
+                            <img class="img-responsive img-ligne" src="img/{{ ligne.numLigne }}.gif" alt="Ligne {{ ligne.numLigne }}">
                         </div>
                         <div class="col-md-6 col-xs-6 text-right">
                             <h1 class="chevron">

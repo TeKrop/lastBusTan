@@ -2,18 +2,16 @@
 <div class="container">
 
     <!-- Page Heading -->
-    <div class="row">
-        <div class="col-md-12 page-header">
-            <div class="col-md-6 col-xs-12 vbottom">
-                <h1>
-                    <i class="glyphicon glyphicon-road"></i> Last Bus Tan
-                    <small class="text-overflow">{{ pageHeader }}</small>
-                </h1>
-            </div><!--
-            --><div class="col-md-6 col-xs-12 vbottom">
-                <!-- BACK BUTTON -->
-                <button class="btn btn-raised btn-block btn-primary" ng-click="backToList('arrets')" ng-show="currentArret"><i class="glyphicon glyphicon-chevron-left"></i> Revenir à la liste des arrêts</button>
-            </div>
+    <div class="row page-header no-margin">
+        <div class="col-md-6 col-xs-12 vbottom">
+            <h1>
+                <i class="glyphicon glyphicon-road"></i> Last Bus Tan
+                <small class="text-overflow">{{ pageHeader }}</small>
+            </h1>
+        </div><!--
+        --><div class="col-md-6 col-xs-12 vbottom no-padding">
+            <!-- BACK BUTTON -->
+            <button class="btn btn-raised btn-block btn-primary" ng-click="backToList('arrets')" ng-show="currentArret"><i class="glyphicon glyphicon-chevron-left"></i> Revenir à la liste des arrêts</button>
         </div>
     </div>
 

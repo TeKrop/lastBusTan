@@ -33,27 +33,6 @@ lastBusTanControllers.service('Helpers', function($http) {
     }
 
     /* Trigerred to show a specific stop */
-    // this.showArret = function(arret) {
-    //     var that = this;
-    //     this.loading = true;
-    //     this.errorMessage = false;
-    //     this.currentArret = arret.libelle;
-    //     this.pageHeader = 'Arrêt ' + arret.libelle;
-    //     $http.get('/api/arret/' + arret.codeLieu)
-    //         .success(function(data) {
-    //             that.arretData = data;
-    //             that.loading = false;
-    //             if (data.length === 0) {
-    //                 that.errorMessage = 'Erreur : aucune donnée pour l\'arrêt ' + arret.libelle;
-    //             }
-    //         })
-    //         .error(function(data) {
-    //             console.log('Error: ' + data);
-    //             that.loading = false;
-    //             that.errorMessage = 'Erreur pendant le chargement des données';
-    //         });
-    // }
-
     // this.showArret = function(codeLieu) {
     //     console.log(codeLieu);
     //     var that = this;
@@ -119,7 +98,7 @@ lastBusTanControllers.service('Helpers', function($http) {
     }
 
     /* Quick search for arrets list */
-    this.quickSearch = function () {
+    this.quickSearch = function() {
         // if the input is not empty, search and pick results
         var keyword = this.searchInput;
         if (keyword !== undefined) {

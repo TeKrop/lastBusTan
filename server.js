@@ -58,7 +58,7 @@ watch('public/less/style.less', function(filename) {
 });
 
 // watch js relative to angular changes, and compile js
-watch('public/js', function(filename) {
+watch('public/js/app', function(filename) {
     console.log('[node-watch]', filename, 'changed. Compiling js files...');
     new compressor.minify({
         type: 'uglifyjs',
@@ -69,10 +69,11 @@ watch('public/js', function(filename) {
             'bower_components/angular/angular.js',
             'bower_components/angular-route/angular-route.js',
             'bower_components/ngInfiniteScroll/build/ng-infinite-scroll.js',
-            'public/js/app.js',
-            'public/js/directives.js',
-            'public/js/services.js',
-            'public/js/controllers.js'
+            'public/js/app/main.js',
+            'public/js/app/app.js',
+            'public/js/app/directives.js',
+            'public/js/app/services.js',
+            'public/js/app/controllers.js'
         ],
         fileOut: 'public/js/script.js',
         callback: function(err, min){
