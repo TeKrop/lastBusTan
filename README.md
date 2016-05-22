@@ -31,5 +31,8 @@ The project is divided in two parts :
 - the back-end (server), with development configuration, basic web server, and API server. In fact, it was a choice to make the calls to the TAN API server-side, and then transform the data in a format I exploit in front-end. Here are the main reasons : lighten the js computing client-side, allow anyone to build an application (Android, iOS, Windows Phone, ...) based on the API of the server, ... I understand that there will be a lot of calls to the TAN API from the server, but it's only an issue when we have a lot of clients, and that's not the case here.
 - the front-end (angular), with views, controllers, assets, and calls to the back-end API. As I have only three controllers for the three main pages, I wrote the controllers in a unique file.
 
+## Known issues
+As i'm not using https, Google Chrome (on desktop and mobile) won't allow the website to get your geolocation, even if you allow it in your browser settings. I will use https soon in order to solve this issue ;)
+
 ## Bugs and feedback
 If you find any bug, problem, or if you have any suggestion for improvements, don't hesitate to make a ticket or send me a mail (vporchet@gmail.com). As it's my first Angular app, I probably made some mistakes and/or forgot to use some features provided by Angular. If it's the case, don't hesitate to contact me as well :) 
