@@ -1,7 +1,8 @@
 // global variables
 // different error messages
 var errorMessages = {
-    geolocalisationError : 'Impossible de charger les arrêts à proximité : vous devez autoriser votre navigateur à utiliser votre géolocalisation.',
+    geolocationDeniedError : 'Impossible de charger les arrêts à proximité : vous devez autoriser votre navigateur à utiliser votre géolocalisation.',
+    geolocationNotSupportedError : 'La géolocalisation ne semble pas être supportée par votre navigateur',
     noArretNextToPositionError : 'Aucun arrêt à moins de 500m de votre position.',
     loadingDataError : 'Erreur pendant le chargement des données',
     noDataForArretError : 'Erreur : aucune donnée pour cet arrêt ou plus de passage à cette heure aujourd\'hui'
@@ -16,35 +17,42 @@ lastBusTanControllers.controller('ArretsProchesController', function($scope, $ht
     $scope.arretData = [];
 
     // we get the latitude and longitude of the user and then get the list
-    navigator.geolocation.getCurrentPosition(function(position) {
-        var pos = {
-            latitude: position.coords.latitude,
-            longitude: position.coords.longitude
-        };
+    if (navigator && navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(function(position) {
+            var pos = {
+                latitude: position.coords.latitude,
+                longitude: position.coords.longitude
+            };
 
-        // get the arrets with api
-        $http.get('/api/arrets/' + pos.latitude + '/' + pos.longitude)
-            .success(function(data) {
-                $scope.arrets = data;
+            // get the arrets with api
+            $http.get('/api/arrets/' + pos.latitude + '/' + pos.longitude)
+                .success(function(data) {
+                    $scope.arrets = data;
+                    $scope.loading = false;
+                    if (data.length === 0) {
+                        $scope.errorMessage = errorMessages.noArretNextToPositionError;
+                    }
+                })
+                .error(function(data) {
+                    console.log('Error: ' + data);
+                    $scope.loading = false;
+                    $scope.errorMessage = errorMessages.loadingDataError;
+                });
+        },
+        function (error) {
+            if (error.code == error.PERMISSION_DENIED) {
+                console.log("permission denied");
+                $scope.arrets = [];
                 $scope.loading = false;
-                if (data.length === 0) {
-                    $scope.errorMessage = errorMessages.noArretNextToPositionError;
-                }
-            })
-            .error(function(data) {
-                console.log('Error: ' + data);
-                $scope.loading = false;
-                $scope.errorMessage = errorMessages.loadingDataError;
-            });
-    },
-    function (error) {
-        if (error.code == error.PERMISSION_DENIED) {
-            console.log("permission denied");
-            $scope.arrets = [];
-            $scope.loading = false;
-            $scope.errorMessage = errorMessages.geolocalisationError;
-        }
-    });
+                $scope.errorMessage = errorMessages.geolocationDeniedError;
+            }
+        });
+    } else {
+        console.log("Geolocation not supported");
+        $scope.arrets = [];
+        $scope.loading = false;
+        $scope.errorMessage = errorMessages.geolocationNotSupportedError;
+    }
 
     // when we click on a "arret", display data about it
     $scope.showArret = function(arret) {
@@ -204,8 +212,6 @@ lastBusTanControllers.controller('ArretsController', function($scope, $http, Hel
                 that.errorMessage = errorMessages.loadingDataError;
             });
     };
-
-    //$scope.showArret = Helpers.showArret;
 
     // quick search with input
     $scope.quickSearch = Helpers.quickSearch;

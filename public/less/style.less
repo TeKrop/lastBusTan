@@ -49,35 +49,37 @@ a:focus, .btn:focus{
     margin: 0;
 }
 
-/*********** HEURES D'ARRET *********/
+/*********** SEARCH INPUT ***********/
 
+.search-input {
+    .panel-body {
+        padding: 5px 15px;
 
-.form-group {
-    margin: 0 !important;
+        .form-group {
+            margin: 0 !important;
 
-    &.form-group-lg {
-        padding-bottom: 0;
-    }
+            &.form-group-lg {
+                padding-bottom: 0;
+            }
 
-    .input-group {
+            .input-group {
 
-        .input-group-addon, .form-control {
-            font-size: 35px !important;
-        }
+                .input-group-addon, .form-control {
+                    font-size: 35px !important;
+                }
 
-        .input-group-addon {
-            padding-left: 3px;
-        }
+                .input-group-addon {
+                    padding-left: 3px;
+                }
 
-        .form-control {
-            height: 60px;
-            padding-bottom: 3px;
+                .form-control {
+                    height: 60px;
+                    padding-bottom: 3px;
+                }
+            }
         }
     }
 }
-
-
-
 
 /*********** ARRETS ***********/
 .arrets {
@@ -138,6 +140,28 @@ a:focus, .btn:focus{
             }
         }
     }
+    .fancy-select {
+        select {
+            background: #009688 url(../img/select-bg.png) right center no-repeat;
+            color: #009688; // workaround for hiding text and arrow
+            border: 0;
+            margin-bottom: 10px;
+            height: 90px;
+            border-top-left-radius: 3px;
+            border-top-right-radius: 3px;
+            box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 6px 0px, rgba(0, 0, 0, 0.12) 0px 1px 6px 0px;
+        }
+        img {
+            width: 70px;
+            position: absolute;
+            top: 10px;
+            left: 25px;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            text-indent: 1px;
+            text-overflow: '';
+        }
+    }
 }
 
 /** MOBILE : screen-xs = 480px */
@@ -154,6 +178,9 @@ a:focus, .btn:focus{
                     }
                 }
             }
+            img {
+                width: 70px;
+            }
         }
     }
     .lignes {
@@ -161,13 +188,13 @@ a:focus, .btn:focus{
             .panel-heading {
                 h1 {
                     &.chevron {
-                        margin-top: 11px;
+                        margin-top: 6px;
                     }
                 }
                 .row {
-                    height: 80px;
+                    height: 70px;
                     .img-ligne {
-                        width: 80px;
+                        width: 70px;
                     }
                 }
             }
@@ -175,6 +202,23 @@ a:focus, .btn:focus{
             .panel-body {
                 p {
                     font-size: 20px;
+                }
+            }
+        }
+    }
+    .search-input {
+        .panel-body {
+            .form-group {
+                .input-group {
+
+                    .input-group-addon, .form-control {
+                        font-size: 20px !important;
+                    }
+
+                    .form-control {
+                        height: 40px;
+                        padding-bottom: 2px;
+                    }
                 }
             }
         }

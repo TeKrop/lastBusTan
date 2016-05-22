@@ -51,7 +51,8 @@
     <!-- LIGNES -->
     <div class="row" infinite-scroll="showMoreData('lignes')" infinite-scroll-distance="1" ng-show="!currentArret">
         <div class="col-md-4 col-xs-12 lignes" ng-repeat="ligne in lignes">
-            <div class="panel panel-primary">
+            <!-- fancy select for desktop -->
+            <div class="panel panel-primary hidden-xs hidden-sm">
                 <div class="panel-heading" ng-click="toggleArrets(ligne)">
                     <div class="row">
                         <div class="col-md-6 col-xs-6">
@@ -73,7 +74,13 @@
                     </div>
                 </div>
             </div>
+            <!-- fancy select for mobile -->
+            <div class="fancy-select hidden-md hidden-lg">
+                <select class="col-xs-12" id="select{{ligne.numLigne}}" ng-init="selectedArret[ligne.numLigne] = ligne.arrets[0]" ng-model="selectedArret[ligne.numLigne]" ng-options="arret.libelle for arret in ligne.arrets" ng-change="showArret(ligne, selectedArret[ligne.numLigne])"></select>
+                <img class="img-responsive img-ligne" src="img/{{ ligne.numLigne }}.gif" alt="Ligne {{ ligne.numLigne }}">
+            </div>
             <!-- /.row -->
-        </select>
+        </div>
     </div>
+
 </div>

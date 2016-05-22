@@ -32,31 +32,6 @@ lastBusTanControllers.service('Helpers', function($http) {
         return hours*60 + minutes;
     }
 
-    /* Trigerred to show a specific stop */
-    // this.showArret = function(codeLieu) {
-    //     console.log(codeLieu);
-    //     var that = this;
-    //     this.loading = true;
-    //     this.errorMessage = false;
-    //     this.currentArret = codeLieu;
-    //     this.pageHeader = 'Arrêt ' + codeLieu;
-    //     $http.get('/api/arret/' + codeLieu)
-    //         .success(function(data) {
-    //             console.log(data);
-    //             that.arretData = data;
-    //             that.loading = false;
-    //             if (data.length === 0) {
-    //                 that.errorMessage = 'Erreur : aucune donnée pour l\'arrêt ' + codeLieu;
-    //             }
-    //         })
-    //         .error(function(data) {
-    //             console.log('Error: ' + data);
-    //             that.loading = false;
-    //             that.errorMessage = 'Erreur pendant le chargement des données';
-    //         });
-    // };
-
-
     /* Triggered when click on a "ligne" or "arret" */
     this.showMoreData = function(type) {
         if (type == 'lignes') {
