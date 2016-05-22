@@ -12,6 +12,8 @@ bower install
 node server.js
 ```
 
+## Demo
+You can see a demonstration of the website here : http://tan.tekrop.fr/
 ## Development environment
 I'm using some node modules in order to improve the development and the website loading time. Here is the list of the main modules :
 - [**express**](https://www.npmjs.com/package/express), for quick and easy setup
