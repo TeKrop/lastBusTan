@@ -1,5 +1,5 @@
 # Last Bus Tan
-Check the last bus of the day in Nantes
+![Mockup LastBusTan](https://dl.dropboxusercontent.com/u/28570337/lastbustan/mockup_github.jpg)
 
 ## Development dependencies
 less : `npm install -g less`
