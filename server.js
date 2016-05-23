@@ -1,5 +1,7 @@
 /*************** SET UP ***************/
 var express  = require('express');
+var fs = require('fs');                          // filesystem, to open ssl certificates
+var https = require('https');                    // to serve with https
 var compression = require('compression');        // gzip or deflate compression for page loading
 var helmet = require('helmet');                  // security for production
 var app = express();                             // create our app w/ express
@@ -14,6 +16,7 @@ var Q = require("q");                            // use promises to chain functi
 var compressor = require('node-minify');         // tool for minifying CSS and JS
 
 /*************** CONFIG ***************/
+
 app.use(compression());                                                             // compress all requests
 app.use(helmet());                                                                  // security for well-known web vulnerabilities
 app.use(express.static(__dirname + '/public'));                                     // set the static files location
@@ -91,8 +94,18 @@ watch('public/js/app', function(filename) {
 
 /*************** LISTEN ***************/
 
-app.listen(80);
-console.log("Listening on port 80");
+// IF YOU WANT TO USE HTTPS
+
+https.createServer({
+    key: fs.readFileSync('your_certificate_key.pem'),
+    cert: fs.readFileSync('your_certificate.pem')
+}, app).listen(443);
+console.log("Listening on port 443 with HTTPS");
+
+// IF YOU WANT TO USE HTTP
+
+/*app.listen(80);
+console.log("Listening on port 80 with HTTP");*/
 
 /*************** ROUTES ***************/
 
