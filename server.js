@@ -27,6 +27,27 @@ app.use(bodyParser.json());                                                     
 app.use(bodyParser.json({ type: 'application/vnd.api+json' }));                     // parse application/vnd.api+json as json
 app.use(methodOverride());
 
+/*************** LISTEN ***************/
+
+// IF YOU WANT TO USE HTTPS (WITH HTTP REDIRECT)
+
+https.createServer({
+    key: fs.readFileSync('your_certificate_key.pem'),
+    cert: fs.readFileSync('your_certificate.pem')
+}, app).listen(443);
+console.log("Listening on port 443 with https");
+
+// Redirect from http port 80 to https
+http.createServer(function (req, res) {
+    res.writeHead(301, { "Location": "https://" + req.headers['host'] + req.url });
+    res.end();
+}).listen(80);
+
+// IF YOU WANT TO USE HTTP
+
+/*app.listen(80);
+console.log("Listening on port 80 with HTTP");*/
+
 /*************** MODEL ***************/
 
 //var dataHostURL = "open_preprod.tan.fr"; // development server
@@ -92,24 +113,14 @@ watch('public/js/app', function(filename) {
     });
 });
 
-/*************** LISTEN ***************/
-
-// IF YOU WANT TO USE HTTPS
-
-https.createServer({
-    key: fs.readFileSync('your_certificate_key.pem'),
-    cert: fs.readFileSync('your_certificate.pem')
-}, app).listen(443);
-console.log("Listening on port 443 with HTTPS");
-
-// IF YOU WANT TO USE HTTP
-
-/*app.listen(80);
-console.log("Listening on port 80 with HTTP");*/
-
 /*************** ROUTES ***************/
 
 /********** API **********/
+
+// General function for a valid line (ligne)
+function isValidLigne(ligne) {
+    return !(ligne.numLigne.length === 3 && ligne.numLigne.substring(0, 1) === '1');
+}
 
 // get all "arrets"
 app.get('/api/arrets', function(req, res) {
@@ -126,7 +137,19 @@ app.get('/api/arrets', function(req, res) {
         result.on('data', function(chunk) {
             body += chunk;
         }).on('end', function() {
-            res.json(JSON.parse(body));
+            // we filter each arretData for wrong ligne
+            var arretsData = JSON.parse(body);
+
+            // classic loop in order to remove in place
+            for (i = 0; i < arretsData.length; ++i) {
+                arretsData[i].ligne = arretsData[i].ligne.filter(isValidLigne);
+                // if after filtering, there is no ligne remaining, delete the arret
+                if (arretsData[i].ligne.length == 0) {
+                    arretsData.splice(i--, 1);
+                }
+            }
+
+            res.json(arretsData);
         });
     });
 
@@ -151,7 +174,19 @@ app.get('/api/arrets/:latitude/:longitude', function(req, res) {
         result.on('data', function(chunk) {
             body += chunk;
         }).on('end', function() {
-            res.json(JSON.parse(body));
+            // we filter each arretData for wrong ligne
+            var arretsData = JSON.parse(body);
+
+            // classic loop in order to remove in place
+            for (i = 0; i < arretsData.length; ++i) {
+                arretsData[i].ligne = arretsData[i].ligne.filter(isValidLigne);
+                // if after filtering, there is no ligne remaining, delete the arret
+                if (arretsData[i].ligne.length == 0) {
+                    arretsData.splice(i--, 1);
+                }
+            }
+
+            res.json(arretsData);
         });
     });
 
@@ -209,10 +244,8 @@ app.get('/api/lignes', function(req, res) {
                 });
             });
 
-            // then, we remove some incorrect "lignes" of the API (1B, 105, LU)
-            lignesData = lignesData.filter(function(elt) {
-                return ['1B', '105'].indexOf(elt.numLigne) === -1;
-            });
+            // then, we remove some incorrect "lignes" of the API (1xx)
+            lignesData = lignesData.filter(isValidLigne);
 
             res.json(lignesData);
         });
