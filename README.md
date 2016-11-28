@@ -15,12 +15,16 @@ bower install
 node server.js
 ```
 ### Docker
-There is a Dockerfile in the root directory of the project. You just need to run these two commands and the app will be up !
-You can customize these as you wish : i put `tekrop/lastbustan` as `image_name` and `lastbustan` as `container_name` for example.
+There is a Dockerfile in the root directory of the project. You can build an image, or just pull the image from Docker Hub !
+In order to run the containter, you can use the `container_name` you want (i used `lastbustan` for example).
 
 ```
-docker build . -t <image_name>:latest
-docker run -d --name <container_name> --publish 8080:80 <image_name>
+# Pull from the Docker Hub...
+docker pull tekrop/lastbustan
+# ... Or build the image thanks to Dockerfile
+docker build . -t tekrop/lastbustan:latest
+# And run a container with the image
+docker run -d --name <container_name> --publish 8080:80 tekrop/lastbustan
 ```
 The app will be accessible at `http://<your_ip>:8080/`
 
