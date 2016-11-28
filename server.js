@@ -27,26 +27,30 @@ app.use(bodyParser.json());                                                     
 app.use(bodyParser.json({ type: 'application/vnd.api+json' }));                     // parse application/vnd.api+json as json
 app.use(methodOverride());
 
+var usingHttps = false; // by default, don't use https
+
 /*************** LISTEN ***************/
 
-// IF YOU WANT TO USE HTTPS (WITH HTTP REDIRECT)
 
-https.createServer({
-    key: fs.readFileSync('your_certificate_key.pem'),
-    cert: fs.readFileSync('your_certificate.pem')
-}, app).listen(443);
-console.log("Listening on port 443 with https");
+if (usingHttps) {
+    // if you want to use https (with http redirect) directly
+    // with node (and not use a reverse proxy)
+    https.createServer({
+        key: fs.readFileSync('your_certificate_key.pem'),
+        cert: fs.readFileSync('your_certificate.pem')
+    }, app).listen(443);
+    console.log("Listening on port 443 with https");
 
-// Redirect from http port 80 to https
-http.createServer(function (req, res) {
-    res.writeHead(301, { "Location": "https://" + req.headers['host'] + req.url });
-    res.end();
-}).listen(80);
-
-// IF YOU WANT TO USE HTTP
-
-/*app.listen(80);
-console.log("Listening on port 80 with HTTP");*/
+    // Redirect from http port 80 to https
+    http.createServer(function (req, res) {
+        res.writeHead(301, { "Location": "https://" + req.headers['host'] + req.url });
+        res.end();
+    }).listen(80);
+} else {
+    // else, classic http
+    app.listen(80);
+    console.log("Listening on port 80 with HTTP");
+}
 
 /*************** MODEL ***************/
 
