@@ -22,7 +22,7 @@ You can customize these as you wish : i put `tekrop/lastbustan` as `image_name` 
 docker build . -t <image_name>:latest
 docker run -d --name <container_name> --publish 8080:80 <image_name>
 ```
-The app will be accessible at http://<your_ip>:8080/
+The app will be accessible at `http://<your_ip>:8080/`
 
 ## Demo
 You can see a demonstration of the website here : https://tan.tekrop.fr/
