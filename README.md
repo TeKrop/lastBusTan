@@ -5,12 +5,24 @@
 less : `npm install -g less`
 
 ## Install and run
+
+### Classic
+
 ```
 npm install
 npm install -g bower
 bower install
 node server.js
 ```
+### Docker
+There is a Dockerfile in the root directory of the project. You just need to run these two commands and the app will be up !
+You can customize these as you wish : i put `tekrop/lastbustan` as `image_name` and `lastbustan` as `container_name` for example.
+
+```
+docker build . -t <image_name>:latest
+docker run -d --name <container_name> --publish 8080:80 <image_name>
+```
+The app will be accessible at http://<your_ip>:8080/
 
 ## Demo
 You can see a demonstration of the website here : https://tan.tekrop.fr/
