@@ -16,7 +16,7 @@ node server.js
 ```
 ### Docker
 There is a Dockerfile in the root directory of the project. You can build an image, or just pull the image from Docker Hub !
-In order to run the containter, you can use the `container_name` you want (i used `lastbustan` for example).
+In order to run the container, you can use the `container_name` you want (i used `lastbustan` for example).
 
 ```
 # Pull from the Docker Hub...
