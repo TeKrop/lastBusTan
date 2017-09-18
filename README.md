@@ -1,5 +1,5 @@
 # Last Bus Tan
-![Mockup LastBusTan](https://tekrop.fr/img/lastbustan_github.jpg)
+![Mockup LastBusTan](https://tekrop.fr/img/portfolio/lastbustan.jpg)
 
 ## Development dependencies
 less : `npm install -g less`
