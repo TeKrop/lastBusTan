@@ -28,8 +28,6 @@ docker run -d --name <container_name> --publish 8080:80 tekrop/lastbustan
 ```
 The app will be accessible at `http://<your_ip>:8080/`
 
-## Demo
-You can see a demonstration of the website here : https://tan.tekrop.fr/
 ## Development environment
 I'm using some node modules in order to improve the development and the website loading time. Here is the list of the main modules :
 - [**express**](https://www.npmjs.com/package/express), for quick and easy setup
